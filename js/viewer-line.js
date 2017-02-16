@@ -21,11 +21,30 @@ var initYAxis=[];
 var initMarker=[]; 'markers', 'lines', 'lines+markers'
 var initTitle=[]; // title for the plot,
 var initLabel=[]; // label for the datafile
+var initXY=[]; // mode for picking x, y index
 
 // http://localhost/synapse/view.html?
 //     url=http://localhost/data/synapse/segments-dummy.csv
-// x=column-idx, y=column-idx, ..
-// also, alias  to supplement the filestub as trace-name
+
+
+// per url, first-in first-out
+// 
+// x = (integer) csv column idx
+// y = (integer) csv column idx
+// xy = null, 'oneall', 'crossall'
+// alias = (chars) trace name , default(column name)
+// color = (chars) trace color  
+// xaxis = (chars) xaxis label
+// yaxis = (chars) yaxis label
+// marker = (chars) 'markers'(default), 'lines', or 'lines+markers'
+// skip = (integer) number of lines to skip for the header
+// title = (chars) title of the plot
+// aliasLabel = (chars) label for datafile, default(file stub)
+// xy = (chars) xy index mode
+// 
+// 
+
+
 
 function processArgs(args) {
   var urls=[];
@@ -34,6 +53,7 @@ function processArgs(args) {
   var alias=[];
   var color=[];
   var skip=0;
+  var xy=null;
   var title=null;
   var label=null;
   var marker='lines';
@@ -82,6 +102,8 @@ function processArgs(args) {
                label=null;
                initMarker.push(marker);
                marker='lines';
+               initXY.push(xy);
+               xy=null;
                first=false;
              }
              first=false;
@@ -146,6 +168,12 @@ function processArgs(args) {
              title=t;
              break;
              }
+          case 'xy': 
+             {
+             var t=trimQ(kvp[1]);
+             xy=t;
+             break;
+             }
           case 'aliasLabel': 
              {
              var t=trimQ(kvp[1]);
@@ -177,6 +205,7 @@ window.console.log("dropping this...",kvp[0].trim());
       yaxis.push('Y');
     initYAxis.push(yaxis);
     initTitle.push(title);
+    initXY.push(xy);
     initLabel.push(label);
     initMarker.push(marker);
   }
@@ -230,9 +259,10 @@ function loadAndProcessCSVfromFile(urls) {
       var url=urls[i];
       var csv=ckExist(url);
       var fline=csv.split('\n')[0];
-window.console.log(fline);
+//window.console.log(fline);
+// process the first line..
       $.csv.toArray(fline, {}, function(err, data) {
-window.console.log(data);
+//window.console.log(data);
         initPlot_label.push(data);
       });
 
@@ -247,6 +277,27 @@ window.console.log(data);
         }
         initPlot_data.push(data);
 
+// if there is xy mode, then to build initYidx and initXidx
+        if( initXY[i] != null) {
+          var cnt=initPlot_label[i].length;
+          var xidx=[];
+          var yidx=[];
+          if(initXY[i]=='oneall') {
+            xidx.push(0);
+            for(var x=1;x<cnt;x++) {
+              yidx.push(x); 
+            }
+          }
+          if(initXY[i]=='crossall') {
+            for(var x=0;x<cnt;x++) {
+              xidx.push(x);
+              x++;
+              yidx.push(x);
+            }
+          }
+          initXidx[i]=xidx;
+          initYidx[i]=yidx;
+        }
 // fill in matching alias with column label name 
 // if there is no user supplied alias to it
         var alias=initAlias[i];
@@ -263,6 +314,7 @@ window.console.log(data);
           var fstub=chopForStub(url);
           nlist.push(fstub);
       }
+
   }
   return nlist;
 }

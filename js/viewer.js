@@ -106,7 +106,7 @@ window.addEventListener('resize', function(event){
 function doResize() {
   frameHeight=window.innerHeight;
   frameWidth=window.innerWidth;
-window.console.log("ONSIZE:: ", frameWidth, ", ",frameHeight);
+//window.console.log("ONSIZE:: ", frameWidth, ", ",frameHeight);
   if(enableEmbedded) {
     if(saveFirst) {
       displayInitPlot();

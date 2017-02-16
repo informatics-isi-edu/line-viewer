@@ -120,7 +120,7 @@ function getMinMax(pdata,keys) {
     if(_max > max) max=_max;
     if(_min < min) min=_min;
   }
-window.console.log("min,max", min, " ",max);
+//window.console.log("min,max", min, " ",max);
   return [min,max]; 
 }
 

@@ -13,7 +13,7 @@ if (window.self !== window.top) {
 var trackingPlot=[];
 
 function moreThanOnePlot(){
-window.console.log("trackingPlot..", trackingPlot.length);
+//window.console.log("trackingPlot..", trackingPlot.length);
   if(trackingPlot.length > 1)
     return true;
   return false;
@@ -105,7 +105,7 @@ function addOnePlot(plot_idx, pname) {
   _nn+='<div class="panel-title row" style="background-color:transparent;">'; 
 
 if(moreThanOnePlot()) {
-window.console.log("more than one data..");
+//window.console.log("more than one data..");
   _nn+='<button id="'+_visible_name+'" class="pull-left"  style="display:inline-block;outline: none;border:none; background-color:white"  onClick="toggleToPlot('+plot_idx+',\''+_eye_name+'\')" title="hide or show plot"><span id="'+_eye_name+'" class="glyphicon glyphicon-eye-close" style="color:#337ab7;"></span> </button>';
 }
 
@@ -119,7 +119,7 @@ window.console.log("more than one data..");
   // last bits
   _nn+='</div> <!-- panel -->';
   jQuery('#plotList').append(_nn);
-  window.console.log(_nn);
+//  window.console.log(_nn);
   return _visible_name;
 }
 
