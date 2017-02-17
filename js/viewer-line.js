@@ -51,6 +51,8 @@ function processArgs(args) {
   var alias=[];
   var color=[];
   var skip=0;
+  var xaxis=[];
+  var yaxis=[];
   var xy=null;
   var title=null;
   var label=null;
