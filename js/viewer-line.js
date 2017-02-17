@@ -31,7 +31,7 @@ var initXY=[]; // mode for picking x, y index
 // 
 // x = (integer) csv column idx
 // y = (integer) csv column idx
-// xy = null, 'oneall', 'crossall'
+// xy = (chars) xy index mode: null, 'oneall', 'crossall'
 // alias = (chars) trace name , default(column name)
 // color = (chars) trace color  
 // xaxis = (chars) xaxis label
@@ -40,8 +40,6 @@ var initXY=[]; // mode for picking x, y index
 // skip = (integer) number of lines to skip for the header
 // title = (chars) title of the plot
 // aliasLabel = (chars) label for datafile, default(file stub)
-// xy = (chars) xy index mode
-// 
 // 
 
 
