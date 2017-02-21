@@ -10,27 +10,27 @@ The viewer assumes a simple CSV file format.
 
 By default, the first column of the CSV is assumed to be the X value, while the second column is assumed to be the Y value.  
 
-## Multiple data files
+## Multiple CSV datafiles
 
-Click on the blue pull-out icon at upper left corner will slide out a list of data files. Toggle the eye icons will switch among the the available data files
+Click on the blue pull-out icon at upper left corner will slide out a list of data files. Toggle the eye icons will switch among the available data files
 
 ## Parameters
  
-Parameters are optional and are organized per **url**, first in-first out.  They are used to alter the look and feel of the traces and also mark the columns to be used for each trace (x/y)
+Parameters are optional and are organized per *url*, first in-first out.  They are used to alter the look and feel of the traces and also mark the columns to be used for each trace (x/y)
 
-| Parameter | Description |
-| --- | --- |
-| x = (integer) CSV column idx | not all columns needs to be used unless xy is specified. |
-| y = (integer) CSV column idx | not all columns needs to be used unless xy is specified. |
-| xy = (chars) xy index mode | **crossall**, interleaving, x=0&y=1&x=2&y=3,first trace uses column 0 for x axis, column 1 for y axis and 2nd trace uses column 2 for x axis and column 3 for y axis ; **oneall**, x=0&y=1&y=2, first trace uses column 0 for x axis, column 1 for y axis and 2nd trace uses column 0 for x axis, column 2 for y axis | 
-| alias = (chars) | trace name.  Defaults to column name from CSV header |
-| color = (chars) trace | plotly color, **rgb(16,32,77)**, **blue**, **10204D** |
-| xaxis = (chars) label | X axis label |
-| yaxis = (chars) label | Y axis label |
-| marker = (chars) | plotly marker. What to draw for the traces.  **lines**(default), **markers** , or **lines+markers**. Either lines, points for the data points only, or both the lines and points |
-| skip = (integer) | number of lines to skip in the beginning of the file as part of header |
-|   title = (chars) | title of the plot |
-|   aliasLabel = (chars) | label for datafile, default(file stub) shows up in the pull-out panel |
+| Parameter | Note | Description |
+| --- | --- | --- |
+| x (integer) | CSV column idx | not all columns needs to be used unless xy is specified. |
+| y (integer) | CSV column idx | not all columns needs to be used unless xy is specified. |
+| xy (chars) | xy index mode | **crossall**, interleaving, x=0&y=1&x=2&y=3,first trace uses column 0 for x axis, column 1 for y axis and 2nd trace uses column 2 for x axis and column 3 for y axis ; **oneall**, x=0&y=1&y=2, first trace uses column 0 for x axis, column 1 for y axis and 2nd trace uses column 0 for x axis, column 2 for y axis | 
+| alias (chars) | trace name | used for labeling the name of trace and used in legend. Defaults to column name from CSV header if not supplied |
+| color (chars) | trace color| **rgb(16,32,77)**, **blue**, **10204D** |
+| marker (chars) | trace line | what to draw for the traces.  **lines**(default), **markers** , or **lines+markers**. Either lines, points for the data points only, or both the lines and points |
+| xaxis (chars) | x label | X axis label |
+| yaxis (chars) | y label | Y axis label |
+| skip (integer) | skip |  number of lines to skip in the beginning of the file as part of header |
+|   title (chars) | plot title | title of the plot |
+|   aliasLabel (chars) | datafile | label for datafile, default(file stub) shows up in the pull-out panel |
 
 ## Examples
 
