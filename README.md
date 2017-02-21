@@ -2,14 +2,6 @@
 
 Plotting line charts using plotly
 
-### Download and Run 
-
-You can clone the source repository with Git by running:
-
-git clone https://github.com/informatics-isi-edu/line-viewer.git
-
-and invoke it as in Examples
-
 ## File Formats
 
 The viewer assumes a simple CSV file format.
@@ -17,6 +9,14 @@ The viewer assumes a simple CSV file format.
 The line-viewer can be invoked with one or more CSV datafiles
 
 By default, the first column of the CSV is assumed to be the X value, while the second column is assumed to be the Y value.  
+
+## Download and Run 
+
+You can clone the source repository with Git by running:
+
+git clone https://github.com/informatics-isi-edu/line-viewer.git
+
+and invoke the viewer as in Examples
 
 ## Parameters
  
