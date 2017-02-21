@@ -2,17 +2,21 @@
 
 Plotting line charts using plotly
 
-line-viewer can be invoked with one or more CSV datafiles
+### Download and Run 
+
+You can clone the source repository with Git by running:
+
+git clone https://github.com/informatics-isi-edu/line-viewer.git
+
+and invoke it as in Examples
 
 ## File Formats
 
 The viewer assumes a simple CSV file format.
 
+The line-viewer can be invoked with one or more CSV datafiles
+
 By default, the first column of the CSV is assumed to be the X value, while the second column is assumed to be the Y value.  
-
-## Multiple CSV datafiles
-
-Click on the blue pull-out icon at upper left corner will slide out a list of data files. Toggle the eye icons will switch among the available data files
 
 ## Parameters
  
@@ -31,6 +35,10 @@ Parameters are optional and are organized per **url**, first in-first out.  They
 | skip (integer) | row skip |  number of lines to skip in the beginning of the file as part of header |
 |   title (chars) | plot title | title of the plot |
 |   aliasLabel (chars) | datafile | label for datafile, default(file stub) shows up in the pull-out panel |
+
+## Multiple CSV datafiles
+
+Click on the blue pull-out icon at upper left corner will slide out a list of data files. Toggle the eye icons will switch among the available data files
 
 ## Examples
 
