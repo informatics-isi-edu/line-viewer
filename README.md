@@ -2,7 +2,7 @@
 
 Plotting line charts using plotly
 
-line-viewer can be invoked with one or more csv datafiles
+line-viewer can be invoked with one or more CSV datafiles
 
 ## File Formats
 
@@ -10,17 +10,20 @@ The viewer assumes a simple CSV file format.
 
 By default, the first column of the CSV is assumed to be the X value, while the second column is assumed to be the Y value.  
 
+## Multiple data files
+
+Click on the blue pull-out icon at upper left corner will slide out a list of data files. Toggle the eye icons will switch among the the available data files
+
 ## Parameters
  
 Parameters are optional and are organized per **url**, first in-first out.  They are used to alter the look and feel of the traces and also mark the columns to be used for each trace (x/y)
 
 | Parameter | Description |
 | --- | --- |
-| x = (integer) csv column idx | not all columns needs to be used unless xy is specified. |
-| y = (integer) csv column idx | not all columns needs to be used unless xy is specified. |
-
+| x = (integer) CSV column idx | not all columns needs to be used unless xy is specified. |
+| y = (integer) CSV column idx | not all columns needs to be used unless xy is specified. |
 | xy = (chars) xy index mode | **crossall**, interleaving, x=0&y=1&x=2&y=3,first trace uses column 0 for x axis, column 1 for y axis and 2nd trace uses column 2 for x axis and column 3 for y axis ; **oneall**, x=0&y=1&y=2, first trace uses column 0 for x axis, column 1 for y axis and 2nd trace uses column 0 for x axis, column 2 for y axis | 
-| alias = (chars) | trace name.  Defaults to column name from csv header |
+| alias = (chars) | trace name.  Defaults to column name from CSV header |
 | color = (chars) trace | plotly color, **rgb(16,32,77)**, **blue**, **10204D** |
 | xaxis = (chars) label | X axis label |
 | yaxis = (chars) label | Y axis label |
@@ -29,7 +32,7 @@ Parameters are optional and are organized per **url**, first in-first out.  They
 |   title = (chars) | title of the plot |
 |   aliasLabel = (chars) | label for datafile, default(file stub) shows up in the pull-out panel |
 
-## Invoking examples
+## Examples
 
 Plot a line in a single file without any parameters.
 
