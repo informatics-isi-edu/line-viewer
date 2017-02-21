@@ -34,9 +34,7 @@ to be used for each trace (x/y)
 | --- | --- |
 | x = (integer) csv column idx | not all columns needs to be used unless xy is specified. |
 | y = (integer) csv column idx | not all columns needs to be used unless xy is specified. |
-| xy = (chars) xy index mode | 'crossall', interleaving, x=0&y=1&x=2&y=3,first trace uses column 0 for x axis, column 1 for y axis and 2nd trace uses
-column 2 for x axis and column 3 for y axis ; 'oneall', x=0&y=1&y=2, first traces uses column 0 for x axis, column 1 for y axis and 2nd trace uses column 0 for x axis, column 2 for y axis | 
- 
+| xy = (chars) xy index mode | 'crossall', interleaving, x=0&y=1&x=2&y=3,first trace uses column 0 for x axis, column 1 for y axis and 2nd trace uses column 2 for x axis and column 3 for y axis ; 'oneall', x=0&y=1&y=2, first traces uses column 0 for x axis, column 1 for y axis and 2nd trace uses column 0 for x axis, column 2 for y axis | 
 | alias = (chars) | trace name.  Defaults to column name from csv header ** HOW DO I SPECIFY THE TRACENAME FOR MORE THEN ONE TRACE?  ALSO, SHOULD WE CONSIDER CHANGING THIS TO BE TRACENAME, RATHER THEN ALIAS, OR IS ALIAS SOMETHING THAT PLOTLY KNOWS ABOUT |
 | color = (chars) trace | color ** WHAT VALUES CAN BE USED HERE?**|
 | xaxis = (chars) label | X axis label ** WHAT HAPPENDS IF WE HAVE A SECOND FILE WITH AN XAXIS LABEL**|
