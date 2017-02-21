@@ -16,7 +16,7 @@ Click on the blue pull-out icon at upper left corner will slide out a list of da
 
 ## Parameters
  
-Parameters are optional and are organized per *url*, first in-first out.  They are used to alter the look and feel of the traces and also mark the columns to be used for each trace (x/y)
+Parameters are optional and are organized per ** url **, first in-first out.  They are used to alter the look and feel of the traces and also mark the columns to be used for each trace (x/y)
 
 | Parameter | Note | Description |
 | --- | --- | --- |
