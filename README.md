@@ -34,14 +34,14 @@ Parameters are optional and are organized per **url**, first in-first out.  They
 
 ## Examples
 
-Plot a line in a single file without any parameters.
+Plot a line in a single file without any parameter
 
 ```
 view.html?url=http://localhost/data/data1.csv
 
 ```
 
-Plot two lines from a single file.
+Plot two lines from a single file
 
 ```
 view.html?url=http://localhost/data/data1.csv
@@ -53,7 +53,7 @@ view.html?url=http://localhost/data/data1.csv
 
 ```
 
-Plot multiple lines from two data files with some custom parameters.
+Plot multiple lines from two data files with some custom parameters
 
 ```
 view.html?url=http://localhost/data/data1.csv&
