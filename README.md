@@ -39,9 +39,26 @@ to be used for each trace (x/y)
 
 ## Examples
 
-Plot lines in a single file.
+Plot a line in a single file without any parameters.
 
+```
 view.html?url=http://localhost/data/data1.csv
+
+```
+
+Plot two lines from a file.
+
+```
+view.html?url=http://localhost/data/data1.csv
+             x=0&
+             y=1&
+             x=2&
+             y=3&
+             title='Two lines from data1'&
+
+```
+
+Plot lines from two files with custom parameters.
 
 ```
 view.html?url=http://localhost/data/data1.csv&
