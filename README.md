@@ -1,6 +1,6 @@
 # line-viewer
 
-plotting line charts using plotly
+Plotting line charts using plotly
 
 line-viewer can be invoked with one or more csv datafiles
 
@@ -15,7 +15,7 @@ WHAT ABOUT HEADERS?
 WHAT ABOUT SUBSEQUENT COLUMNS.
 
 
- ## Involking
+## Involking
  
  DESCRIBE HOW THE COMMAND IS TO BE INVOLKED.... 
  ONE THING THAT IS NOT CLEAR TO ME IS HOW MULTIPLE URLS ARE USED.
@@ -25,7 +25,7 @@ WHAT ABOUT SUBSEQUENT COLUMNS.
 
 ## Commandline Parameters
  
- Parameters are mostly optional and are organized per **url**, first in-first out.  They are used to alter the look and feel of the traces and also mark the columns to be used for each trace (x/y)
+Parameters are mostly optional and are organized per **url**, first in-first out.  They are used to alter the look and feel of the traces and also mark the columns to be used for each trace (x/y)
 
 | Parameter | Description |
 | --- | --- |
