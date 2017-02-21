@@ -4,17 +4,17 @@ Plotting line charts using plotly
 
 ## File Formats
 
-The viewer assumes a simple CSV file format.
+The viewer assumes a simple CSV file format
 
 The line-viewer can be invoked with one or more CSV datafiles
 
-By default, the first column of the CSV is assumed to be the X value, while the second column is assumed to be the Y value.  
+By default, the first column of the CSV is assumed to be the X value, while the second column is assumed to be the Y value  
 
 ## Download and Run 
 
 You can clone the source repository with Git by running:
 
-git clone https://github.com/informatics-isi-edu/line-viewer.git
+  git clone https://github.com/informatics-isi-edu/line-viewer.git
 
 and invoke the viewer as in Examples
 
@@ -38,18 +38,18 @@ Parameters are optional and are organized per **url**, first in-first out.  They
 
 ## Multiple CSV datafiles
 
-Click on the blue pull-out icon at upper left corner will slide out a list of data files. Toggle the eye icons will switch among the available data files
+Click on the blue pull-out icon at upper left corner will slide out a list of datafiles. Toggle the eye icons will switch among the available datafiles
 
 ## Examples
 
-Plot a line in a single file without any parameter
+Plot a line in a single CSV file without any parameter
 
 ```
 view.html?url=http://localhost/data/data1.csv
 
 ```
 
-Plot two lines from a single file
+Plot two lines from a single CSV file
 
 ```
 view.html?url=http://localhost/data/data1.csv
@@ -61,7 +61,7 @@ view.html?url=http://localhost/data/data1.csv
 
 ```
 
-Plot multiple lines from two data files with some custom parameters
+Plot multiple lines from two CSV datafiles with some custom parameters
 
 ```
 view.html?url=http://localhost/data/data1.csv&
