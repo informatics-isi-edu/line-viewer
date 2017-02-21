@@ -16,8 +16,7 @@ You can clone the source repository with Git by running:
 
   git clone https://github.com/informatics-isi-edu/line-viewer.git
 
-and invoke the viewer as in Examples
-
+and invoke the viewer as in **Examples**
 ## Parameters
  
 Parameters are optional and are organized per **url**, first in-first out.  They are used to alter the look and feel of the traces and also mark the columns to be used for each trace (x/y)
