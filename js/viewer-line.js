@@ -31,7 +31,7 @@ var initXY=[]; // mode for picking x, y index
 // 
 // x = (integer) csv column idx
 // y = (integer) csv column idx
-// xy = (chars) xy index mode: null, 'oneall', 'crossall'
+// xy = (chars) xy index mode: 'oneall', 'crossall'
 // alias = (chars) trace name , default(column name)
 // color = (chars) trace color  
 // xaxis = (chars) xaxis label
