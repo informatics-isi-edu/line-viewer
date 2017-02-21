@@ -61,7 +61,7 @@ view.html?url=http://localhost/data/data1.csv
              y=1&
              x=2&
              y=3&
-             title='Two lines from data1'&
+             title='Two lines from data1.csv'
 
 ```
 
