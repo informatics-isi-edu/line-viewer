@@ -52,6 +52,8 @@ function ckExist(url) {
 /*****MAIN*****/
 jQuery(document).ready(function() {
 
+//window.console.log("in Ready call..");
+
   frameHeight=window.innerHeight;
   frameWidth=window.innerWidth;
 
@@ -71,6 +73,7 @@ jQuery(document).ready(function() {
   // defaults from viewer-user.js
 //http://localhost/synapse/view.html?http://localhost/data/synapse/segments-dummy.csv
   var args=document.location.href.split('?');
+//window.console.log("ARGS",document.location.href);
   if (args.length >= 2) {
      var urls=processArgs(args);
      if(urls.length >= 1) {
