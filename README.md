@@ -59,12 +59,13 @@ Parameters are optional and are organized per **url**, first in-first out.  They
 | --- | --- | --- | --- |
 | **x** | integer | File | Column index of X value for a trace. Not all columns needs to be used unless xy is specified. |
 | **y** | integer | File | Column index of Y value for a trace. not all columns needs to be used unless xy is specified. |
-| **layout** | **(sharedx \| interleaved)** | File | specifies orgiization of traces within the CSV file | 
-| **tracename** | columnname | trace  | used for labeling the name of trace and on plot legend. Default to column name from CSV header if not supplied |
+| **csvlayout** | (sharedx \| interleaved\|custom) | File | specifies orgiization of traces within the CSV file | 
+| **traces** | X1,Y1;X2,Y2,... | File | If csvlayout is custom, provides a list of trace definitions|
+| **tracenames** | columnname,columnname,... | trace  | used for labeling the name of trace and on plot legend. Default to column name from CSV header if not supplied |
 | **color** | chars | Plot | **rgb(16,32,77)**, **blue**, **10204D**, or **#10204D**. There is a default set of color being used if none is specified |
-| **marker** | chars | Plot | what to draw for the traces.  **lines**(default), **markers** , or **lines+markers**. Either lines, points for the data points, or both the lines and points |
-| **xaxis** | chars | Plot | X axis label |
-| **yaxis** | chars | Plot | Y axis label |
+| **marker** | (lines\|markers\|lines+markers) | Plot | what to draw for the traces. Default is lines. Either lines, points for the data points, or both the lines and points |
+| **xaxislabel** | chars | Plot | X axis label |
+| **yaxislabel** | chars | Plot | Y axis label |
 | **skiprows** | integer | File |  number of lines to skip in the beginning of the file as part of header. It defaults to 1. This value should be set to 0 if there is no header.|
 | **title** | chars | Plot | title of the plot |
 | **plotname** | (filename\|tracelist) | File | label for datafile, default(file stub) shows up in the pull-out panel |
