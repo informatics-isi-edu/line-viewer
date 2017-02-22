@@ -10,6 +10,15 @@ Input to this program are one or more CSV files, each of which contains one or m
 
 Traces can be assigned to one or more **plots** which can selectively displayed.  Within a plot, traces can be turned on and off interactively.
 
+## Download and Run 
+
+You can clone the source repository with Git by running:
+
+  git clone https://github.com/informatics-isi-edu/line-viewer.git
+
+and invoke the viewer as in **Examples**
+
+
 ## File Formats
 
 The viewer assumes a simple CSV file format.
@@ -21,13 +30,7 @@ line-viewer also supports an **interleaved** column layout in which columns are 
 
 It is also possible to enumerate traces explicilty by providing specific XY column pairings.
 
-## Download and Run 
 
-You can clone the source repository with Git by running:
-
-  git clone https://github.com/informatics-isi-edu/line-viewer.git
-
-and invoke the viewer as in **Examples**
 ## Parameters
  
 Parameters may specify options at the file, trace or plot level. Parameters are processed in order.  In the case of repeated plot level parameters, the last value is the one that is used.  File level parameters apply to the last file specified.  
