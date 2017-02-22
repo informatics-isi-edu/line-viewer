@@ -24,7 +24,7 @@ and invoke the viewer as in **Examples**
 The viewer assumes a simple CSV file format.
 The files may have an optional header row. Each column in the file is identified by an index, numbered starting from 1.  Each trace within a file consists of X and Y pair, where the X and Y are identified by their respective column index.  
 
-By default, we assume that a header row is always present.  If there is no header, then the skiprow parameter should be set to zero.
+By default, we assume that a header row is always present.  If there is no header, then the `headerrows` parameter should be set to zero.
 
 By default, the first column of the CSV is assumed to be the X value, while the second and subsequent columns are assumed to be the Y values.  So for example the traces would be (1,2), (1,3), (1,4), etc.
 
@@ -64,9 +64,9 @@ Parameters are optional and are organized per **url**, first in-first out.  They
 | **tracenames** | columnname,columnname,... | trace  | used for labeling the name of trace and on plot legend. Default to column name from CSV header if not supplied |
 | **color** | chars | Plot | **rgb(16,32,77)**, **blue**, **10204D**, or **#10204D**. There is a default set of color being used if none is specified |
 | **marker** | (lines\|markers\|lines+markers) | Plot | what to draw for the traces. Default is lines. Either lines, points for the data points, or both the lines and points |
-| **xaxislabel** | chars | Plot | X axis label |
-| **yaxislabel** | chars | Plot | Y axis label |
-| **skiprows** | integer | File |  number of lines to skip in the beginning of the file as part of header. It defaults to 1. This value should be set to 0 if there is no header.|
+| **xaxislable** | chars | Plot | X axis label |
+| **yaxislable** | chars | Plot | Y axis label |
+| **headerrows** | integer | File |  number of lines to skip in the beginning of the file as part of header. It defaults to 1. This value should be set to 0 if there is no header.|
 | **title** | chars | Plot | title of the plot |
 | **plotname** | (filename\|tracelist) | File | label for datafile, default(file stub) shows up in the pull-out panel |
 
