@@ -7,7 +7,8 @@ Simple line charts from CSV files using plotly
 line-viewer takes one or more CSV files as an input and additional parameters and creates an interactive plot using plot.ly JavaScript line plotting routines.
 
 Input to this program are one or more CSV files, each of which contains one or more **traces**.  
-One can optionally select a subset of traces in a file to be used in the plot.
+
+Traces can be assigned to one or more **plots** which can selectively displayed.  Within a plot, traces can be turned on and off interactively.
 
 ## File Formats
 
