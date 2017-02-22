@@ -44,8 +44,8 @@ Parameters are optional and are organized per **url**, first in-first out.  They
 | **xaxis** | chars | Plot | X axis label |
 | **yaxis** | chars | Plot | Y axis label |
 | **skip** | integer | File |  number of lines to skip in the beginning of the file as part of header |
-| **title** | chars | plot | title of the plot |
-| **aliasLabel** | chars | File | label for datafile, default(file stub) shows up in the pull-out panel |
+| **title** | chars | Plot | title of the plot |
+| **filealias** | chars | File | label for datafile, default(file stub) shows up in the pull-out panel |
 
 ## Multiple CSV datafiles
 
