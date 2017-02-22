@@ -17,8 +17,8 @@ function addLinesPlot(divname, config, fwidth, fheight) {
   var title=config[8];
   var label=config[9];
 
-  var xrange=getMinMax(pdata,xkeys);
-  var yrange=getMinMax(pdata,ykeys);
+  var xrange=getMinMax(pdata,xkeys,true);
+  var yrange=getMinMax(pdata,ykeys,true);
 
   var _data=getLinesAt(pdata,xkeys,ykeys,clist,marker,alist);
   var _layout=getLinesDefaultLayout(fwidth, fheight,xaxis,yaxis,xrange,yrange,title);
@@ -108,7 +108,7 @@ function getLinesDefaultLayout(w,h,xaxis,yaxis,xrange,yrange,title) {
   return p;
 }
 
-function getMinMax(pdata,keys) {
+function getMinMax(pdata,keys,pad) {
   var cnt=keys.length;
   var tmp=getOriginalDataByKey(pdata, keys[0]);
   var max=Math.max.apply(Math,tmp);
@@ -121,6 +121,10 @@ function getMinMax(pdata,keys) {
     if(_min < min) min=_min;
   }
 //window.console.log("min,max", min, " ",max);
+  if(pad) {
+    min=min*(1.01);
+    max=max*(1.01);
+  }
   return [min,max]; 
 }
 
