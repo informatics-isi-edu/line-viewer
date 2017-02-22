@@ -1,14 +1,24 @@
 # line-viewer
 
-Plotting line charts using plotly
+Simple line charts from CSV files using plotly
+
+## Overview
+
+line-viewer takes one or more CSV files as an input and additional parameters and creates an interactive plot using plot.ly JavaScript line plotting routines.
+
+Input to this program are one or more CSV files, each of which contains one or more **traces**.  
+One can optionally select a subset of traces in a file to be used in the plot.
 
 ## File Formats
 
-The viewer assumes a simple CSV file format
+The viewer assumes a simple CSV file format.
+The files may have an optional header row. Each column in the file is identified by an index, numbered starting from 1.  Each trace within a file consists of X and Y pair, where the X and Y are identified by their respective column index.  
 
-The line-viewer can be invoked with one or more CSV datafiles
+By default, the first column of the CSV is assumed to be the X value, while the second and subsequent columns are assumed to be the Y values.  So for example the traces would be (1,2), (1,3), (1,4), etc.
 
-By default, the first column of the CSV is assumed to be the X value, while the second column is assumed to be the Y value  
+line-viewer also supports an **interleaved** column layout in which columns are assumed to be orginized in X,Y pairs:  (1,2), (3,4), (5,6), etc.
+
+It is also possible to enumerate traces explicilty by providing specific XY column pairings.
 
 ## Download and Run 
 
@@ -19,21 +29,23 @@ You can clone the source repository with Git by running:
 and invoke the viewer as in **Examples**
 ## Parameters
  
+Parameters may specify options at the file, trace or plot level. Parameters are processed in order.  In the case of repeated plot level parameters, the last value is the one that is used.  File level parameters apply to the last file specified.  
+
 Parameters are optional and are organized per **url**, first in-first out.  They are used to alter the look and feel of the traces and also mark the columns to be used for each trace (x/y)
 
-| Parameter | type | Note | Description |
+| Parameter | Value | Level | Description |
 | --- | --- | --- | --- |
-| **x** | integer | CSV column index | not all columns needs to be used unless xy is specified. |
-| **y** | integer | CSV column index | not all columns needs to be used unless xy is specified. |
-| **xy** | chars | xy index mode | **crossall**, interleaving, x=0&y=1&x=2&y=3,first trace uses column 0 for x axis, column 1 for y axis and 2nd trace uses column 2 for x axis and column 3 for y axis ; **oneall**, x=0&y=1&y=2, first trace uses column 0 for x axis, column 1 for y axis and 2nd trace uses column 0 for x axis, column 2 for y axis | 
+| **x** | integer | File | Column index of X value for a trace. Not all columns needs to be used unless xy is specified. |
+| **y** | integer | File | Column index of Y value for a trace. not all columns needs to be used unless xy is specified. |
+| **layout** | **(shared \| interleaved)** | File | specifies orgiization of traces within the CSV file | 
 | **alias** | chars | trace name | used for labeling the name of trace and on plot legend. Default to column name from CSV header if not supplied |
 | **color** | chars | trace color| **rgb(16,32,77)**, **blue**, **10204D**, or **#10204D**. There is a default set of color being used if none is specified |
 | **marker** | chars | trace line | what to draw for the traces.  **lines**(default), **markers** , or **lines+markers**. Either lines, points for the data points, or both the lines and points |
-| **xaxis** | chars | x label | X axis label |
-| **yaxis** | chars | y label | Y axis label |
-| **skip** | integer | row skip |  number of lines to skip in the beginning of the file as part of header |
-| **title** | chars | plot title | title of the plot |
-| **aliasLabel** | chars | datafile | label for datafile, default(file stub) shows up in the pull-out panel |
+| **xaxis** | chars | Plot | X axis label |
+| **yaxis** | chars | Plot | Y axis label |
+| **skip** | integer | File |  number of lines to skip in the beginning of the file as part of header |
+| **title** | chars | plot | title of the plot |
+| **aliasLabel** | chars | File | label for datafile, default(file stub) shows up in the pull-out panel |
 
 ## Multiple CSV datafiles
 
