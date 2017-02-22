@@ -24,6 +24,8 @@ and invoke the viewer as in **Examples**
 The viewer assumes a simple CSV file format.
 The files may have an optional header row. Each column in the file is identified by an index, numbered starting from 1.  Each trace within a file consists of X and Y pair, where the X and Y are identified by their respective column index.  
 
+HOW DO WE KNOW IF THERE IS A HEADER ROW.  I THINK THIS NEEDS TO BE AN OPTION.
+
 By default, the first column of the CSV is assumed to be the X value, while the second and subsequent columns are assumed to be the Y values.  So for example the traces would be (1,2), (1,3), (1,4), etc.
 
 line-viewer also supports an **interleaved** column layout in which columns are assumed to be orginized in X,Y pairs:  (1,2), (3,4), (5,6), etc.
@@ -42,6 +44,7 @@ Each trace is assigned a name using the following procedure:
 - If a tracename is specified as part of a 
 - If a column header is provided, the header of the Y column of the trace is used.  If the same name occurs in more then one file ....
 - If no header is provided, the column index of the Y column is used for the trace name.
+
 ## Parameters
  
 Parameters may specify options at the file, trace or plot level. Parameters are processed in order.  In the case of repeated plot level parameters, the last value is the one that is used.  File level parameters apply to the last file specified.  
@@ -54,15 +57,15 @@ Parameters are optional and are organized per **url**, first in-first out.  They
 | **y** | integer | File | Column index of Y value for a trace. not all columns needs to be used unless xy is specified. |
 | **layout** | **(shared \| interleaved)** | File | specifies orgiization of traces within the CSV file | 
 | **tracename** | columnname | trace  | used for labeling the name of trace and on plot legend. Default to column name from CSV header if not supplied |
-| **color** | chars | trace color| **rgb(16,32,77)**, **blue**, **10204D**, or **#10204D**. There is a default set of color being used if none is specified |
-| **marker** | chars | trace line | what to draw for the traces.  **lines**(default), **markers** , or **lines+markers**. Either lines, points for the data points, or both the lines and points |
+| **color** | chars | Plot | **rgb(16,32,77)**, **blue**, **10204D**, or **#10204D**. There is a default set of color being used if none is specified |
+| **marker** | chars | Plot | what to draw for the traces.  **lines**(default), **markers** , or **lines+markers**. Either lines, points for the data points, or both the lines and points |
 | **xaxis** | chars | Plot | X axis label |
 | **yaxis** | chars | Plot | Y axis label |
 | **skip** | integer | File |  number of lines to skip in the beginning of the file as part of header |
 | **title** | chars | Plot | title of the plot |
 | **plotname** | (filename\|tracelist) | File | label for datafile, default(file stub) shows up in the pull-out panel |
 
-## Multiple CSV datafiles
+## Multiple Plots
 
 Click on the blue pull-out icon at upper left corner will slide out a list of datafiles. Toggle the eye icons will switch among the available datafiles
 
