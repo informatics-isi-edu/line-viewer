@@ -21,7 +21,7 @@ and invoke the viewer as in **Examples**
 
 ## File Formats
 
-The viewer assumes a simple CSV file format.  Files are specified by a URL, and within line-viewer, are refered to by a file name (filename), The file name consists of the last component of the URL specifying the file.  We require that all file names be unique.
+The viewer assumes a simple CSV file format.  Files are specified by a URL, and within line-viewer, are refered to by a file name (filename), The file name consists of the last component of the URL path.  We require that all file names be unique.
 
 The files may have an optional header row. Each column in the file is identified by an index, numbered starting from 1 from left to right.  Each trace within a file consists of X and Y pair, where the X and Y are identified by their respective column index or the respective value in the header row, if present.  
 
