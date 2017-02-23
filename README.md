@@ -21,10 +21,11 @@ and invoke the viewer as in **Examples**
 
 ## File Formats
 
-The viewer assumes a simple CSV file format.
-The files may have an optional header row. Each column in the file is identified by an index, numbered starting from 1 from left to right.  Each trace within a file consists of X and Y pair, where the X and Y are identified by their respective column index.  
+The viewer assumes a simple CSV file format.  Files are specified by a URL, and within line-viewer, are refered to by a file name (filename), The file name consists of the last component of the URL specifying the file.  We require that all file names be unique.
 
-By default, we assume that a header row is always present.  We require that value in the header row all be unique. If there is no header, then the `header` parameter should be set to ``false``. In addition, we support CSV files that may have a lines of metadata prior to the header or first data row.  The ``skiprows`` parameter can be used to specify how many of these rows occur before the header (if ``header`` is true), or first data row (if ``header`` is false).
+The files may have an optional header row. Each column in the file is identified by an index, numbered starting from 1 from left to right.  Each trace within a file consists of X and Y pair, where the X and Y are identified by their respective column index or the respective value in the header row, if present.  
+
+By default, we assume that a header row is always present.  We require that values in the header row all be unique. If there is no header, then the `header` parameter should be set to ``false``. In addition, we support CSV files that may have lines of metadata prior to the header or first data row.  The ``skiprows`` parameter can be used to specify how many of these rows occur before the header (if ``header`` is true), or first data row (if ``header`` is false).
 
 By default, the first column of the CSV is assumed to be the X value, while the second and subsequent columns are assumed to be the Y values.  So for example the traces would be (1,2), (1,3), (1,4), etc. 
 
@@ -34,7 +35,7 @@ It is also possible to enumerate traces explicilty by providing specific XY colu
 
 ## Column Names 
 
-A column is named by its file name and the index of the column within that file, e.g. filename:index.  If there is only one file, the file name may be omitted.  The file name consists of the last component of the URL specifying the file.  We require that all file names be unique.
+A column is named by its file name and the name of the column within that file, e.g. filename:index or filename:headervalue.  If there is only one file, the file name may be omitted.  
 
 A column within a file is identified by either its column index, or by the value in its column heading if it exists.  
 
