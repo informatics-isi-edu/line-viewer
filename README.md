@@ -56,7 +56,7 @@ Parameters may specify options at the file, trace or plot level. The ``url`` for
 | Parameter | Value | Level | Description |
 | --- | --- | --- | --- |
 | **url** | URL1,URL2, ... | Plot | A set of URLs of the CSV files to be used for each plot. Usually, one URL is used.|
-| **csvlayout** | filename;(sharedx\|interleaved\|custom), ... | File | specific orgiization of traces within the CSV file | 
+| **csvlayout** | filename:(sharedx\|interleaved\|custom), ... | File | specific orgiization of traces within the CSV file | 
 | **traces** | filename:X1;Y1,X2;Y2,... | File | A set of columns to be used for plotting the traces. If csvlayout is custom, provides a list of trace definitions, otherwise ignore. Trace definition can use column heading (if available) or column indexes. Can occur more then once.|
 | **tracenames** | ycolumnname1:tracename1,ycolumname2:tracename2,... | trace  | By default, a trace is named by the name of its Y column (i.e. its index or heading value). You can override the default trace name using this parameter.  This parameter can occur more then once.|
 | **color** | ycolumnname1:color1,ycolumnname2:color2,... | Plot | A color can be specified in the RGB values, text, or color number e.g. **rgb(16,32,77)**, **blue**, **10204D**, or **#10204D**. There is a default set of color being used if none is specified |
@@ -64,7 +64,7 @@ Parameters may specify options at the file, trace or plot level. The ``url`` for
 | **xaxislable** | plotname:label, ... | Plot | X axis label |
 | **yaxislable** | plotname:label, ... | Plot | Y axis label |
 | **skiprows** | filename:integer, ... | File |  number of lines to skip in the beginning of the file. It defaults to 0.|
-| **header** | true/false | File | Header (default to true) indicates whether a header row is provided in the data set.  The header row is the (**skiprows**+1)th row. |
+| **header** | filename:(true\|false) | File | Header (default to true) indicates whether a header row is provided in the data set.  The header row is the (**skiprows**+1)th row. |
 | **title** | plotname:titlestring, ... | Plot | title of the plot |
 | **plotname** | name:(filename\|tracelist, ... | Plot | label for datafile, default(file stub) shows up in the pull-out panel. In future version, this parameter will also allow you to specify a list of traces to be defined as a plot |
 
