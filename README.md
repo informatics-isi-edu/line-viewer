@@ -64,7 +64,7 @@ Parameters may specify options at the file, trace or plot level. Parameters are 
 | **xaxislable** | chars | Plot | X axis label |
 | **yaxislable** | chars | Plot | Y axis label |
 | **skippedrows** | integer | File |  number of lines to skip in the beginning of the file. It defaults to 0.|
-| **header** | true/false | File | Header (default to 1) indicates whether a header row is provided in the data set.  The header row is the (**skippedrows**+1)th row. |
+| **header** | true/false | File | Header (default to true) indicates whether a header row is provided in the data set.  The header row is the (**skippedrows**+1)th row. |
 | **title** | chars | Plot | title of the plot |
 | **plotname** | (filename\|tracelist) | Plot | label for datafile, default(file stub) shows up in the pull-out panel |
 
