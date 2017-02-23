@@ -8,7 +8,7 @@ line-viewer takes one or more CSV files as an input and additional parameters an
 
 Input to this program are one or more CSV files, each of which contains one or more **traces**.  
 
-Traces can be assigned to one or more **plots** which can selectively displayed.  Within a plot, traces can be turned on and off interactively.
+Traces are sets of coordinates that can be assigned to one or more **plots** which can be selectively displayed.  Within a plot, traces can be turned on and off interactively.
 
 ## Download and Run 
 
@@ -22,17 +22,17 @@ and invoke the viewer as in **Examples**
 ## File Formats
 
 The viewer assumes a simple CSV file format.
-The files may have an optional header row. Each column in the file is identified by an index, numbered starting from 1.  Each trace within a file consists of X and Y pair, where the X and Y are identified by their respective column index.  
+The files may have an optional header row. Each column in the file is identified by an index, numbered starting from 1 from left to right.  Each trace within a file consists of X and Y pair, where the X and Y are identified by their respective column index.  
 
-By default, we assume that a header row is always present.  We require that value in the header row all be unique. If there is no header, then the `headerrows` parameter should be set to zero.
+By default, we assume that a header row is always present.  We require that value in the header row all be unique. If there is no header, then the `headerrows` parameter should be set to zero. [HT: this parameter has to be a different one from number of rows to skipped e.g. header=false. See the parameter below]
 
-By default, the first column of the CSV is assumed to be the X value, while the second and subsequent columns are assumed to be the Y values.  So for example the traces would be (1,2), (1,3), (1,4), etc.
+By default, the first column of the CSV is assumed to be the X value, while the second and subsequent columns are assumed to be the Y values.  So for example the traces would be (1,2), (1,3), (1,4), etc. 
 
 line-viewer also supports an **interleaved** column layout in which columns are assumed to be orginized in X,Y pairs:  (1,2), (3,4), (5,6), etc.
 
 It is also possible to enumerate traces explicilty by providing specific XY column pairings.
 
-## Column Names
+## Column Names 
 
 A column is named by its file name and the index of the column within that file.  If there is only one file, the file name may be omitted.  The file name consists of the last component of the URL specifying the file.  We require that all file names be unique.
 
@@ -55,15 +55,16 @@ Parameters may specify options at the file, trace or plot level. Parameters are 
 
 | Parameter | Value | Level | Description |
 | --- | --- | --- | --- |
-| **url** | URL | Plot | URL to a CSV file. |
-| **csvlayout** | (sharedx \| interleaved\|custom) | File | specifies orgiization of traces within the CSV file | 
-| **traces** | X1,Y1;X2,Y2,... | File | If csvlayout is custom, provides a list of trace definitions, otherwise ignore. Trace definition can use column heading (if available) or column indexes.|
-| **tracenames** | ycolumnname1,tracename1;ycolumname2,tracename2;... | trace  | By default, a trace is named by the name of its Y column (i.e. its index or heading value). You can use override the trace name specifying the default name, and the new trace name.  |
-| **color** | chars | Plot | **rgb(16,32,77)**, **blue**, **10204D**, or **#10204D**. There is a default set of color being used if none is specified |
+| **url** | URL1,URL2 | Plot | A set of URLs of the CSV files to be used for each plot. Usually, one URL is used. |
+| **csvlayout** | (sharedx \| interleaved\|custom) | File | specific orgiization of traces within the CSV file | 
+| **traces** | X1;Y1,X2;Y2,... | File | A set of columns to be used for plotting the traces. If csvlayout is custom, provides a list of trace definitions, otherwise ignore. Trace definition can use column heading (if available) or column indexes.|
+| **tracenames** | ycolumnname1;tracename1,ycolumname2;tracename2,... | trace  | By default, a trace is named by the name of its Y column (i.e. its index or heading value). You can override the default trace name using this parameter.  |
+| **color** | ycolumnname1;color1,ycolumnname2;color2,... | Plot | A color can be specified in the RGB values, text, or color number e.g. **rgb(16,32,77)**, **blue**, **10204D**, or **#10204D**. There is a default set of color being used if none is specified |
 | **marker** | (lines\|markers\|lines+markers) | Plot | what to draw for the traces. Default is lines. Either lines, points for the data points, or both the lines and points |
 | **xaxislable** | chars | Plot | X axis label |
 | **yaxislable** | chars | Plot | Y axis label |
-| **headerrows** | integer | File |  number of lines to skip in the beginning of the file as part of header. It defaults to 1. This value should be set to 0 if there is no header.|
+| **skippedrows** | integer | File |  number of lines to skip in the beginning of the file. It defaults to 0.|
+| **header** | true/false | File | Header (default to 1) indicates whether a header row is provided in the data set.  The header row is the (**skippedrows**+1)th row. |
 | **title** | chars | Plot | title of the plot |
 | **plotname** | (filename\|tracelist) | Plot | label for datafile, default(file stub) shows up in the pull-out panel |
 
