@@ -24,7 +24,7 @@ and invoke the viewer as in **Examples**
 The viewer assumes a simple CSV file format.
 The files may have an optional header row. Each column in the file is identified by an index, numbered starting from 1 from left to right.  Each trace within a file consists of X and Y pair, where the X and Y are identified by their respective column index.  
 
-By default, we assume that a header row is always present.  We require that value in the header row all be unique. If there is no header, then the `headerrows` parameter should be set to zero. [HT: this parameter has to be a different one from number of rows to skipped e.g. header=false. See the parameter below]
+By default, we assume that a header row is always present.  We require that value in the header row all be unique. If there is no header, then the `header` parameter should be set to ``false``. [HT: this parameter has to be a different one from number of rows to skipped e.g. header=false. See the parameter below]
 
 By default, the first column of the CSV is assumed to be the X value, while the second and subsequent columns are assumed to be the Y values.  So for example the traces would be (1,2), (1,3), (1,4), etc. 
 
