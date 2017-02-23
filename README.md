@@ -61,9 +61,9 @@ Parameters may specify options at the file, trace or plot level. Parameters are 
 | **tracenames** | ycolumnname1;tracename1,ycolumname2;tracename2,... | trace  | By default, a trace is named by the name of its Y column (i.e. its index or heading value). You can override the default trace name using this parameter.  This parameter can occur more then once.|
 | **color** | ycolumnname1;color1,ycolumnname2;color2,... | Plot | A color can be specified in the RGB values, text, or color number e.g. **rgb(16,32,77)**, **blue**, **10204D**, or **#10204D**. There is a default set of color being used if none is specified |
 | **marker** | (lines\|markers\|lines+markers) | Plot | what to draw for the traces. Default is lines. Either lines, points for the data points, or both the lines and points |
-| **xaxislable** | chars | Plot | X axis label |
-| **yaxislable** | chars | Plot | Y axis label |
-| **skiprows** | integer | File |  number of lines to skip in the beginning of the file. It defaults to 0.|
+| **xaxislable** | plotname:label | Plot | X axis label |
+| **yaxislable** | plotname:label | Plot | Y axis label |
+| **skiprows** | filename:integer | File |  number of lines to skip in the beginning of the file. It defaults to 0.|
 | **header** | true/false | File | Header (default to true) indicates whether a header row is provided in the data set.  The header row is the (**skippedrows**+1)th row. |
 | **title** | chars | Plot | title of the plot |
 | **plotname** | (filename\|tracelist) | Plot | label for datafile, default(file stub) shows up in the pull-out panel |
