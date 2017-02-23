@@ -56,6 +56,7 @@ Parameters may specify options at the file, trace or plot level. The ``url`` for
 | Parameter | Value | Level | Description |
 | --- | --- | --- | --- |
 | **url** | URL1,URL2, ... | Plot | A set of URLs of the CSV files to be used for each plot. Usually, one URL is used.|
+| **url proposed** | URL1;csvlayout;alias,URL2;csvlayout;alias, ... | Plot | A set of URLs of the CSV files to be used for each plot. For each URL you can optionally specify the layout and a file alias to be used to name the file columns.  The csvlayout can be sharedx, interleaved, or custom, with the default being sharedx.  If omitted, the file alias will default to the last component of the URL.  If the same last component of the URL path appears in more then one URL, then the file alias must be provided to disambiguate.|
 | **csvlayout** | filename:(sharedx\|interleaved\|custom), ... | File | specific orgiization of traces within the CSV file | 
 | **traces** | filename:X1;Y1,X2;Y2,... | File | A set of columns to be used for plotting the traces. If csvlayout is custom, provides a list of trace definitions, otherwise ignore. Trace definition can use column heading (if available) or column indexes. Can occur more then once.|
 | **tracenames** | ycolumnname1:tracename1,ycolumname2:tracename2,... | trace  | By default, a trace is named by the name of its Y column (i.e. its index or heading value). You can override the default trace name using this parameter.  This parameter can occur more then once.|
