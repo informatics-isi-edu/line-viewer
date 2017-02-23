@@ -24,7 +24,7 @@ and invoke the viewer as in **Examples**
 The viewer assumes a simple CSV file format.
 The files may have an optional header row. Each column in the file is identified by an index, numbered starting from 1 from left to right.  Each trace within a file consists of X and Y pair, where the X and Y are identified by their respective column index.  
 
-By default, we assume that a header row is always present.  We require that value in the header row all be unique. If there is no header, then the `header` parameter should be set to ``false``. [HT: this parameter has to be a different one from number of rows to skipped e.g. header=false. See the parameter below]
+By default, we assume that a header row is always present.  We require that value in the header row all be unique. If there is no header, then the `header` parameter should be set to ``false``. In addition, we support CSV files that may have a lines of metadata prior to the header or first data row.  The ``skiprows`` parameter can be used to specify how many of these rows occur before the header (if ``header`` is true), or first data row (if ``header`` is false).
 
 By default, the first column of the CSV is assumed to be the X value, while the second and subsequent columns are assumed to be the Y values.  So for example the traces would be (1,2), (1,3), (1,4), etc. 
 
@@ -63,7 +63,7 @@ Parameters may specify options at the file, trace or plot level. Parameters are 
 | **marker** | (lines\|markers\|lines+markers) | Plot | what to draw for the traces. Default is lines. Either lines, points for the data points, or both the lines and points |
 | **xaxislable** | chars | Plot | X axis label |
 | **yaxislable** | chars | Plot | Y axis label |
-| **skippedrows** | integer | File |  number of lines to skip in the beginning of the file. It defaults to 0.|
+| **skiprows** | integer | File |  number of lines to skip in the beginning of the file. It defaults to 0.|
 | **header** | true/false | File | Header (default to true) indicates whether a header row is provided in the data set.  The header row is the (**skippedrows**+1)th row. |
 | **title** | chars | Plot | title of the plot |
 | **plotname** | (filename\|tracelist) | Plot | label for datafile, default(file stub) shows up in the pull-out panel |
