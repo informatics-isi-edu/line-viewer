@@ -57,8 +57,8 @@ Parameters may specify options at the file, trace or plot level. Parameters are 
 | --- | --- | --- | --- |
 | **url** | URL | Plot | URL to a CSV file. |
 | **csvlayout** | (sharedx \| interleaved\|custom) | File | specifies orgiization of traces within the CSV file | 
-| **traces** | X1,Y1;X2,Y2,... | File | If csvlayout is custom, provides a list of trace definitions|
-| **tracenames** | ycolumnname1,tracename1;ycolumname2,tracename2;... | trace  | Override the trace name specified in the column heading or index.  |
+| **traces** | X1,Y1;X2,Y2,... | File | If csvlayout is custom, provides a list of trace definitions, otherwise ignore. Trace definition can use column heading (if available) or column indexes.|
+| **tracenames** | ycolumnname1,tracename1;ycolumname2,tracename2;... | trace  | By default, a trace is named by the name of its Y column (i.e. its index or heading value). You can use override the trace name specifying the default name, and the new trace name.  |
 | **color** | chars | Plot | **rgb(16,32,77)**, **blue**, **10204D**, or **#10204D**. There is a default set of color being used if none is specified |
 | **marker** | (lines\|markers\|lines+markers) | Plot | what to draw for the traces. Default is lines. Either lines, points for the data points, or both the lines and points |
 | **xaxislable** | chars | Plot | X axis label |
