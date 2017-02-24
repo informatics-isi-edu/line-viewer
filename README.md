@@ -110,13 +110,12 @@ view.html?url=http://localhost/data/data1.csv&
              y=1&
              y=2&
              y=3&
-             xaxis=Temperature2&
+             xaxis='2nd Temperature'&
              yaxis=Y&
              marker=lines&
              alias=First&
              alias=Second&
              alias=Third&
-             xaxis='2nd Temperature'&
              title=Title2
 ```
 
