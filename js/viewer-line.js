@@ -15,13 +15,16 @@ var initYidx=[];  // column idx to be used for data lines
 var initAlias=[]; // alias for each lines to be used as label
 var initColor=[]; //initial color supplied by user
 var myColor=[];   // color to be used - merged from initColor&defaultColor
-var initSkip=[];  // skip how many lines as header
+var initSkip=[];  // skip how many lines as part of header
 var initXAxis=[];
 var initYAxis=[];
 var initMarker=[]; 'markers', 'lines', 'lines+markers'
 var initTitle=[]; // title for the plot,
 var initLabel=[]; // label for the datafile
 var initXY=[]; // mode for picking x, y index
+var initHeader=[]; // true/false to show if csv file has a row of header
+                   // or not, if false, then label needs to be supplement
+                   // with index of column
 
 // http://localhost/synapse/view.html?
 //     url=http://localhost/data/synapse/segments-dummy.csv
@@ -55,6 +58,7 @@ function processArgs(args) {
   var yaxis=[];
   var xy=null;
   var title=null;
+  var header=true;
   var label=null;
   var marker='lines';
   var first=true;
@@ -98,6 +102,8 @@ function processArgs(args) {
                skip=0;
                initTitle.push(title);
                title=null;
+               initHeader.push(header);
+               header=true;
                initLabel.push(label);
                label=null;
                initMarker.push(marker);
@@ -168,6 +174,14 @@ function processArgs(args) {
              title=t;
              break;
              }
+          case 'header': 
+             {
+             var t=trimQ(kvp[1]);
+             header=true; 
+             if(t=='false')
+               header=false;
+             break;
+             }
           case 'xy': 
              {
              var t=trimQ(kvp[1]);
@@ -205,6 +219,7 @@ window.console.log("dropping this...",kvp[0].trim());
       yaxis.push('Y');
     initYAxis.push(yaxis);
     initTitle.push(title);
+    initHeader.push(header);
     initXY.push(xy);
     initLabel.push(label);
     initMarker.push(marker);
@@ -258,12 +273,21 @@ function loadAndProcessCSVfromFile(urls) {
   for( var i=0; i < cnt; i++ ) {
       var url=urls[i];
       var csv=ckExist(url);
+      var hasHeader=initHeader[i];
+
       var fline=csv.split('\n')[0];
-//window.console.log(fline);
-// process the first line..
+      var hdata=[];
       $.csv.toArray(fline, {}, function(err, data) {
 //window.console.log(data);
-        initPlot_label.push(data);
+        if(hasHeader) {
+          hdata=data; 
+          } else {
+            for(var j=0;j<data.length;j++) {
+              hdata.push(j);
+            }
+        }
+        initPlot_label.push(hdata);
+        hdata=data;
       });
 
       $.csv.toArrays(csv, {}, function(err, data) {
@@ -271,11 +295,16 @@ function loadAndProcessCSVfromFile(urls) {
           alertify.error("Fail: can not access ",url);
           return nlist;
         }
+        if(!hasHeader) { // stuff hdata to the front
+          data.splice(0,0,hdata); 
+        }
+
         if(initSkip.length>i) {
           var skip=initSkip[i];
           data.splice(0,1);
         }
         initPlot_data.push(data);
+window.console.log("csv data length is..",data.length);
 
 // if there is xy mode, then to build initYidx and initXidx
         if( initXY[i] != null) {

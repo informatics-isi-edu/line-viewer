@@ -47,15 +47,20 @@ function setupPlotList(cnt) {
   }
 }
 
+// glyphicon-eye-close = glyphicon-one-fine-empty-dot
+// glyphicon-eye-open = glyphicon-one-fine-full-dot
+// 
 function togglePlot(plot_idx, pname) {
   var tmp='#'+pname;
   var eptr = $(tmp);
-  if( eptr.hasClass('glyphicon-eye-open')) {
-    eptr.removeClass('glyphicon-eye-open').addClass('glyphicon-eye-close');
+  if( eptr.hasClass('glyphicon-one-fine-full-dot')) {
+    eptr.removeClass('glyphicon-one-fine-full-dot').addClass('glyphicon-one-fine-empty-dot');
+    eptr.title='to show';
     trackingPlot[plot_idx]= false;
     } else {
-      eptr.removeClass('glyphicon-eye-close').addClass('glyphicon-eye-open');
+      eptr.removeClass('glyphicon-one-fine-empty-dot').addClass('glyphicon-one-fine-full-dot');
       trackingPlot[plot_idx]= true;
+      eptr.title='';
   }
 }
 
@@ -106,7 +111,7 @@ function addOnePlot(plot_idx, pname) {
 
 if(moreThanOnePlot()) {
 //window.console.log("more than one data..");
-  _nn+='<button id="'+_visible_name+'" class="pull-left"  style="display:inline-block;outline: none;border:none; background-color:white"  onClick="toggleToPlot('+plot_idx+',\''+_eye_name+'\')" title="hide or show plot"><span id="'+_eye_name+'" class="glyphicon glyphicon-eye-close" style="color:#337ab7;"></span> </button>';
+  _nn+='<button id="'+_visible_name+'" class="pull-left"  style="display:inline-block;outline: none;border:none; background-color:white"  onClick="toggleToPlot('+plot_idx+',\''+_eye_name+'\')" title="to show"><span id="'+_eye_name+'" class="glyphicon glyphicon-one-fine-empty-dot" style="color:#337ab7;"></span> </button>';
 }
 
   _nn+='<text>'+pname+'</text>';
