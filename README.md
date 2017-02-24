@@ -21,7 +21,7 @@ and invoke the viewer as in **Examples**
 
 ## File Formats
 
-The viewer assumes a simple CSV file format.  Files are specified by a URL, and within line-viewer, are refered to by a file name (filename), The file name consists of the last component of the URL specifying the file.  We require that all file names be unique.
+The viewer assumes a simple CSV file format.  Files are specified by a URL, and within line-viewer, are refered to by a file name (filename), The file name consists of the last component of the URL path.  We require that all file names be unique.
 
 The files may have an optional header row. Each column in the file is identified by an index, numbered starting from 1 from left to right.  Each trace within a file consists of X and Y pair, where the X and Y are identified by their respective column index or the respective value in the header row, if present.  
 
@@ -56,17 +56,18 @@ Parameters may specify options at the file, trace or plot level. The ``url`` for
 | Parameter | Value | Level | Description |
 | --- | --- | --- | --- |
 | **url** | URL1,URL2, ... | Plot | A set of URLs of the CSV files to be used for each plot. Usually, one URL is used.|
-| **csvlayout** | filename:(sharedx\|interleaved\|custom), ... | File | specific orgiization of traces within the CSV file | 
+| **url proposed** | URL1;csvlayout;alias,URL2;csvlayout;alias, ... | Plot | A set of URLs of the CSV files to be used for each plot. For each URL you can optionally specify the layout and a file alias to be used to name the file columns.  The csvlayout can be sharedx, interleaved, or custom, with the default being sharedx.  If omitted, the file alias will default to the last component of the URL.  If the same last component of the URL path appears in more then one URL, then the file alias must be provided to disambiguate.|
+| **csvlayout** | filename:(sharedx\|interleaved\|custom), ... | File | specific organization of traces within the CSV file | 
 | **traces** | filename:X1;Y1,X2;Y2,... | File | A set of columns to be used for plotting the traces. If csvlayout is custom, provides a list of trace definitions, otherwise ignore. Trace definition can use column heading (if available) or column indexes. Can occur more then once.|
 | **tracenames** | ycolumnname1:tracename1,ycolumname2:tracename2,... | trace  | By default, a trace is named by the name of its Y column (i.e. its index or heading value). You can override the default trace name using this parameter.  This parameter can occur more then once.|
 | **color** | ycolumnname1:color1,ycolumnname2:color2,... | Plot | A color can be specified in the RGB values, text, or color number e.g. **rgb(16,32,77)**, **blue**, **10204D**, or **#10204D**. There is a default set of color being used if none is specified |
-| **marker** | tracename:(lines\|markers\|lines+markers), ... | Plot | what to draw for the traces. Default is lines. Either lines, points for the data points, or both the lines and points |
-| **xaxislable** | plotname:label, ... | Plot | X axis label |
-| **yaxislable** | plotname:label, ... | Plot | Y axis label |
+| **marker** | ycolumnname1:(lines\|markers\|lines+markers), ... | Plot | what to draw for the traces. Default is lines. Either lines, points for the data points, or both the lines and points |
+| **xaxislabel** | plotname:label, ... | Plot | X axis label |
+| **yaxislabel** | plotname:label, ... | Plot | Y axis label |
 | **skiprows** | filename:integer, ... | File |  number of lines to skip in the beginning of the file. It defaults to 0.|
 | **header** | filename:(true\|false) | File | Header (default to true) indicates whether a header row is provided in the data set.  The header row is the (**skiprows**+1)th row. |
 | **title** | plotname:titlestring, ... | Plot | title of the plot |
-| **plotname** | name:(filename\|tracelist, ... | Plot | label for datafile, default(file stub) shows up in the pull-out panel. In future version, this parameter will also allow you to specify a list of traces to be defined as a plot |
+| **plotname** | name:(filename\|tracelist), ... | Plot | label for datafile, default(file stub) shows up in the pull-out panel. In future version, this parameter will also allow you to specify a list of traces to be defined as a plot |
 
 ## Multiple Plots
 
