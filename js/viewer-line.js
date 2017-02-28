@@ -22,6 +22,7 @@ var initMarker=[]; 'markers', 'lines', 'lines+markers'
 var initTitle=[]; // title for the plot,
 var initLabel=[]; // label for the datafile
 var initXY=[]; // mode for picking x, y index
+var initTrace=[]; // trace for storing trace property
 var initHeader=[]; // true/false to show if csv file has a row of header
                    // or not, if false, then label needs to be supplement
                    // with index of column
@@ -34,12 +35,15 @@ var initHeader=[]; // true/false to show if csv file has a row of header
 // 
 // x = (integer) csv column idx
 // y = (integer) csv column idx
-// xy = (chars) xy index mode: 'oneall', 'crossall'
+// xy = (chars) xy index mode: 'sharex', 'interleave' or [{"x":0,"y":1},{"x":2,"y":3}..]
+// trace = [ { "id":0,"name":"firstTrace","color":"blue","marker":"lines+markers"},
+//             { "id":3,"name":"fourthTrace","marker":"lines"}]
 // alias = (chars) trace name , default(column name)
 // color = (chars) trace color  
+// marker = (chars) 'markers'(default), 'lines', or 'lines+markers'
+
 // xaxis = (chars) xaxis label
 // yaxis = (chars) yaxis label
-// marker = (chars) 'markers'(default), 'lines', or 'lines+markers'
 // skip = (integer) number of lines to skip for the header
 // title = (chars) title of the plot
 // aliasLabel = (chars) label for datafile, default(file stub)
@@ -57,10 +61,11 @@ function processArgs(args) {
   var xaxis=[];
   var yaxis=[];
   var xy=null;
+  var trace=null;
   var title=null;
   var header=true;
   var label=null;
-  var marker='lines';
+  var marker=[];;
   var first=true;
   var params = args[1].split('&');
   for (var i=0; i < params.length; i++) {
@@ -107,9 +112,11 @@ function processArgs(args) {
                initLabel.push(label);
                label=null;
                initMarker.push(marker);
-               marker='lines';
+               marker=[];
                initXY.push(xy);
                xy=null;
+               initTrace.push(trace);
+               trace=null;
                first=false;
              }
              first=false;
@@ -157,7 +164,7 @@ function processArgs(args) {
           case 'marker':
              {
              var t=trimQ(kvp[1]);
-             marker=t;
+             marker.push(t);
              break;
              }
 // this is the number of lines to skip for header..
@@ -186,6 +193,12 @@ function processArgs(args) {
              {
              var t=trimQ(kvp[1]);
              xy=t;
+             break;
+             }
+          case 'trace': 
+             {
+             var t=trimQ(kvp[1]);
+             trace=t;
              break;
              }
           case 'aliasLabel': 
@@ -221,6 +234,7 @@ window.console.log("dropping this...",kvp[0].trim());
     initTitle.push(title);
     initHeader.push(header);
     initXY.push(xy);
+    initTrace.push(trace);
     initLabel.push(label);
     initMarker.push(marker);
   }
@@ -277,6 +291,7 @@ function loadAndProcessCSVfromFile(urls) {
 
       var fline=csv.split('\n')[0];
       var hdata=[];
+      var max_y_columns=0; // should use this to do sanity check, 
       $.csv.toArray(fline, {}, function(err, data) {
 //window.console.log(data);
         if(hasHeader) {
@@ -288,6 +303,7 @@ function loadAndProcessCSVfromFile(urls) {
         }
         initPlot_label.push(hdata);
         hdata=data;
+        max_y_columns=hdata.length; 
       });
 
       $.csv.toArrays(csv, {}, function(err, data) {
@@ -311,29 +327,86 @@ window.console.log("csv data length is..",data.length);
           var cnt=initPlot_label[i].length;
           var xidx=[];
           var yidx=[];
-          if(initXY[i]=='oneall') {
-            xidx.push(0);
-            for(var x=1;x<cnt;x++) {
-              yidx.push(x); 
+          while(true) {
+            if(initXY[i]=='sharex') {
+              xidx.push(0);
+              for(var x=1;x<cnt;x++) {
+                yidx.push(x); 
+              }
+              break;
+            }
+            if(initXY[i]=='interleave') {
+              for(var x=0;x<cnt;x++) {
+                xidx.push(x);
+                x++;
+                yidx.push(x);
+              }
+              break;
+            }
+            { // then initXY[i]=[{x:0,y:1},{x:2,y:3}..]
+              var tmp=initXY[i];
+              var xya = JSON.parse(tmp);
+              for(var a=0; a < xya.length; a++) {
+                var item=xya[a];
+                var xx=item['x'];
+                var yy=item['y'];
+                xidx.push(xx);
+                yidx.push(yy);
+              }
+              break;
             }
           }
-          if(initXY[i]=='crossall') {
-            for(var x=0;x<cnt;x++) {
-              xidx.push(x);
-              x++;
-              yidx.push(x);
-            }
-          }
-          initXidx[i]=xidx;
-          initYidx[i]=yidx;
+          initXidx[i]=xidx; // replace
+          initYidx[i]=yidx; // replace
         }
+// if there is trace, then to build marker, color and alias list
+// trace = [ { "id":0,"name":"firstTrace",'color':'blue','marker':'lines+markers'},
+        { // user is supplying a new set of alias
+          var alias=initAlias[i];
+          var yidx=initYidx[i];
+          if(initTrace[i] != null) {
+            var marker=[];
+            var color=[];
+            var alias=[];
+            for(var a=0; a < yidx.length; a++) {
+               marker[a]="lines";
+               color[a]=getDefaultColor(a);
+               alias[a]=null;
+            }
+            var tmp=initTrace[i];
+            var trace = JSON.parse(tmp);
+            for(var a=0; a < trace.length; a++) {
+              var item=trace[a];
+              var id=parseInt(item['id']);
+              var _name=item['name'];
+              var _color=item['color'];
+              var _marker=item['marker'];
+              marker[id]=_marker;
+              color[id]=_color;
+              alias[id]=_name;
+            }
+            initMarker[i]=marker;
+            initColor[i]=color;
+            initAlias[i]=alias;
+          }
 // fill in matching alias with column label name 
-// if there is no user supplied alias to it
-        var alias=initAlias[i];
-        var yidx=initYidx[i];
-// need to fill in some, if alias.length < yidx.length
-        for(var j=alias.length; j<yidx.length;j++) {
-          initAlias[i][j]= getYLabel(i,yidx[j]);
+//                  color with default color
+//                  maker as 'lines'
+// if there are no user supplied values to them
+          for(var j=0; j<yidx.length;j++) {
+            if(initAlias[i].length < j || 
+                      initAlias[i][j] == null) {
+              initAlias[i][j]= getYLabel(i,yidx[j]);
+            }
+            if(initColor[i].length < j || 
+                      initColor[i][j] == null) {
+              initColor[i][j]=getDefaultColor(j);
+            }
+            if(initMarker[i].length < j || 
+                      initMarker[i][j] == null) {
+              initMarker[i][j]='lines';
+            }
+          }
         }
       });
 
@@ -377,28 +450,15 @@ function getYLabel(pidx,idx) {
 function getPlotData(pidx) {
    var p=initPlot_data[pidx];
    var yidx=initYidx[pidx];
-   var color=initColor[pidx];
-   var alias=initAlias[pidx];
+   var clist=initColor[pidx];
+   var alist=initAlias[pidx];
    var xidx=initXidx[pidx];
    var xaxis=initXAxis[pidx];
    var yaxis=initYAxis[pidx];
    var title=initTitle[pidx];
-   var marker=initMarker[pidx];
+   var mlist=initMarker[pidx];
    var label=initLabel[pidx];
 
-   var clist=[];
-   var alist=[];
-   var tlist=[];
-
-   var cnt=yidx.length; // number of traces to be used
-   for(var i=0;i<cnt; i++) {
-     if(color.length > i)
-       clist.push(color[i]);
-       else clist.push(getDefaultColor(i));
-     if(alias.length > i)
-       alist.push(alias[i]);
-       else alist.push(getYLabel(pidx,i));
-   }
-   return [p,xidx, yidx, clist,alist, xaxis,yaxis,marker,title,label];
+   return [p,xidx, yidx, clist,alist, mlist, xaxis,yaxis,title,label];
 }
 

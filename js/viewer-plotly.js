@@ -3,7 +3,7 @@
 //
 var savePlot=[]; // first one is threeD, 2nd is subplots
 
-//[p,xidx, yidx, clist,alist, xaxis,yaxis,marker,title,label];
+//[p,xidx, yidx, clist,alist, mlist, xaxis,yaxis,title,label];
 //addLinesPlot(pdata, config, frameWidth-5, frameHeight-5);
 function addLinesPlot(divname, config, fwidth, fheight) {
   var pdata=config[0];
@@ -11,16 +11,17 @@ function addLinesPlot(divname, config, fwidth, fheight) {
   var ykeys=config[2];
   var clist=config[3];
   var alist=config[4];
-  var xaxis=config[5];
-  var yaxis=config[6];
-  var marker=config[7];
+  var mlist=config[5];
+
+  var xaxis=config[6];
+  var yaxis=config[7];
   var title=config[8];
   var label=config[9];
 
   var xrange=getMinMax(pdata,xkeys,true);
   var yrange=getMinMax(pdata,ykeys,true);
 
-  var _data=getLinesAt(pdata,xkeys,ykeys,clist,marker,alist);
+  var _data=getLinesAt(pdata,xkeys,ykeys,clist,mlist,alist);
   var _layout=getLinesDefaultLayout(fwidth, fheight,xaxis,yaxis,xrange,yrange,title);
   var _width=fwidth;
   var _height=fheight;
@@ -68,9 +69,9 @@ function getLinesAt(pdata,xkeys,ykeys,color,marker,names) {
     }
     if(xkeys.length<i) {
       var _t=xkeys.length-1;
-      data.push(makeOneTrace(pdata,xkeys[_t],ykeys[i],color[i],marker,_name)); 
+      data.push(makeOneTrace(pdata,xkeys[_t],ykeys[i],color[i],marker[i],_name)); 
       } else {
-        data.push(makeOneTrace(pdata,xkeys[i],ykeys[i],color[i],marker,_name)); 
+        data.push(makeOneTrace(pdata,xkeys[i],ykeys[i],color[i],marker[i],_name)); 
     }
   }
   return data;
