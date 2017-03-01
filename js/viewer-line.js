@@ -12,7 +12,7 @@
 // these are per data file
 var initXidx=[];  // column idx to be used for x axis
 var initYidx=[];  // column idx to be used for data lines
-var initAlias=[]; // alias for each lines to be used as label
+var initAlias=[]; // alias for each header lines to be used as label
 var initColor=[]; //initial color supplied by user
 var myColor=[];   // color to be used - merged from initColor&defaultColor
 var initSkip=[];  // skip how many lines as part of header
@@ -24,8 +24,8 @@ var initLabel=[]; // label for the datafile
 var initXY=[]; // mode for picking x, y index
 var initTrace=[]; // trace for storing trace property
 var initHeader=[]; // true/false to show if csv file has a row of header
-                   // or not, if false, then label needs to be supplement
-                   // with index of column
+                   // or not, if false, then header label needs to be
+                   // supplement with index of column
 
 // http://localhost/synapse/view.html?
 //     url=http://localhost/data/synapse/segments-dummy.csv
@@ -33,16 +33,17 @@ var initHeader=[]; // true/false to show if csv file has a row of header
 
 // per url, first-in first-out
 // 
-// xy = (chars) xy index mode: 'shareX', 'interleave' or [{"x":0,"y":1},{"x":2,"y":3}..]
-// x = (integer) csv column idx
-// y = (integer) csv column idx
+// xy = (chars) xy index mode: 'shareX', 'interleave' or
+//         [ {"x":0,"y":1},{"x":2,"y":3}..]
+//   x = (integer) csv column idx
+//   y = (integer) csv column idx
 // trace = [ { "id":0,"name":"firstTrace","color":"blue","marker":"lines+markers"},
-//             { "id":2,"label":"whatever","name":"thirdTrace"}]
-//             { "id":3,"name":"fourthTrace","marker":"lines"}]
-// alias = (chars) trace name , default(column name)
-// color = (chars) trace color  
-// marker = (chars) 'markers'(default), 'lines', or 'lines+markers'
-
+//           { "headerY":"column-header","name":"thirdTrace"}]
+//           { "id":3,"name":"fourthTrace","marker":"lines"}] **
+//   alias = (chars) trace name , default(column name)
+//   color = (chars) trace color  
+//   marker = (chars) 'markers'(default), 'lines', or 'lines+markers'
+//
 // xaxis = (chars) xaxis label
 // yaxis = (chars) yaxis label
 // skip = (integer) number of lines to skip for the header
@@ -51,6 +52,11 @@ var initHeader=[]; // true/false to show if csv file has a row of header
 // header = true or false, to handle bare csv file
 // skip = (integer) number of lines to skip after the first row of header
 // 
+// ** using trace to define th trace characteristics is limited in
+//    several ways, it assumes, y column can only be used once and only
+//    once in a plot and header column name must be unique within the plot.
+//    Ideally the number of traces should corresponds with the (x,y) pairing
+//    but not necessarily
 
 
 
@@ -386,7 +392,7 @@ function loadAndProcessCSVfromFile(urls) {
                   id=parseInt(item['id']);
                   } else {
                     if( ll != undefined) {
-                      id=lookupYLabel(urlidx,item['label']);
+                      var id=lookupHeaderYInTrace(urlidx,item['label'],0);
                     } else {
                       alertify.error("Fail: bad trace item");
                     } 
@@ -403,14 +409,14 @@ function loadAndProcessCSVfromFile(urls) {
             initColor[urlidx]=color;
             initAlias[urlidx]=alias;
           }
-// fill in matching alias with column label name 
+// fill in matching alias with column header label name 
 //                  color with default color
 //                  maker as 'lines'
 // if there are no user supplied values to them
           for(var j=0; j<yidx.length;j++) {
             if(initAlias[urlidx].length < j || 
                       initAlias[urlidx][j] == null) {
-              initAlias[urlidx][j]= getYLabel(urlidx,yidx[j]);
+              initAlias[urlidx][j]= getHeaderY(urlidx,yidx[j]);
             }
             if(initColor[urlidx].length < j || 
                       initColor[urlidx][j] == null) {
@@ -455,21 +461,24 @@ function ckExist(url) {
 }
 
 // something default for now
-function getYLabel(pidx,idx) {
+function getHeaderY(pidx,idx) {
    var list=initPlot_label[pidx];
    return list[idx].trim();
 }
 
-function lookupYLabel(pidx,label) {
+// given a label, look up which trace is it being used 
+// in the tracelist, start is where to start searching
+// this is to allow multiple y in the trace pairing
+function lookupHeaderYInTrace(pidx,label, start) {
    var yidx=initYidx[pidx];  // list of column idx being used for traces
    var list=initPlot_label[pidx];
-   for(var i=0; i<yidx.length;i++) {
+   for(var i=start; i<yidx.length;i++) {
       var j=yidx[i];
       var t=list[j].trim();
       if(label == t)
         return i;
    }
-   alertify.error("Fail: none-existing column label -> ",label);
+   alertify.error("Fail: none-existing column header label -> ",label);
 }
 
 // return datalist and a color list
