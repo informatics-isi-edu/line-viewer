@@ -322,7 +322,6 @@ function loadAndProcessCSVfromFile(urls) {
           data.splice(0,1);
         }
         initPlot_data.push(data);
-window.console.log("csv data length is..",data.length);
 
 // if there is xy mode, then to build initYidx and initXidx
         if( initXY[urlidx] != null) {

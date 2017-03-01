@@ -67,7 +67,7 @@ function getLinesAt(pdata,xkeys,ykeys,color,marker,names) {
     if(names.length >=i) {
       _name=names[i];
     }
-    if(xkeys.length<i) {
+    if(xkeys.length-1 <= i) {
       var _t=xkeys.length-1;
       data.push(makeOneTrace(pdata,xkeys[_t],ykeys[i],color[i],marker[i],_name)); 
       } else {
