@@ -33,7 +33,7 @@ var initHeader=[]; // true/false to show if csv file has a row of header
 
 // per url, first-in first-out
 // 
-// xy = (chars) xy index mode: 'sharex', 'interleave' or [{"x":0,"y":1},{"x":2,"y":3}..]
+// xy = (chars) xy index mode: 'shareX', 'interleave' or [{"x":0,"y":1},{"x":2,"y":3}..]
 // x = (integer) csv column idx
 // y = (integer) csv column idx
 // trace = [ { "id":0,"name":"firstTrace","color":"blue","marker":"lines+markers"},
@@ -330,7 +330,7 @@ window.console.log("csv data length is..",data.length);
           var xidx=[];
           var yidx=[];
           while(true) {
-            if(initXY[urlidx]=='sharex') {
+            if(initXY[urlidx]=='shareX') {
               xidx.push(0);
               for(var x=1;x<cnt;x++) {
                 yidx.push(x); 
