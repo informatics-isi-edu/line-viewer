@@ -33,10 +33,11 @@ var initHeader=[]; // true/false to show if csv file has a row of header
 
 // per url, first-in first-out
 // 
+// xy = (chars) xy index mode: 'sharex', 'interleave' or [{"x":0,"y":1},{"x":2,"y":3}..]
 // x = (integer) csv column idx
 // y = (integer) csv column idx
-// xy = (chars) xy index mode: 'sharex', 'interleave' or [{"x":0,"y":1},{"x":2,"y":3}..]
 // trace = [ { "id":0,"name":"firstTrace","color":"blue","marker":"lines+markers"},
+//             { "id":2,"label":"whatever","name":"thirdTrace"}]
 //             { "id":3,"name":"fourthTrace","marker":"lines"}]
 // alias = (chars) trace name , default(column name)
 // color = (chars) trace color  
@@ -45,8 +46,10 @@ var initHeader=[]; // true/false to show if csv file has a row of header
 // xaxis = (chars) xaxis label
 // yaxis = (chars) yaxis label
 // skip = (integer) number of lines to skip for the header
-// title = (chars) title of the plot
 // aliasLabel = (chars) label for datafile, default(file stub)
+//
+// header = true or false, to handle bare csv file
+// skip = (integer) number of lines to skip after the first row of header
 // 
 
 
@@ -284,16 +287,15 @@ function loadAndProcessCSVfromFile(urls) {
   var nlist=[];
   var cnt=urls.length;
 
-  for( var i=0; i < cnt; i++ ) {
-      var url=urls[i];
+  for( var urlidx=0; urlidx < cnt; urlidx++ ) {
+      var url=urls[urlidx];
       var csv=ckExist(url);
-      var hasHeader=initHeader[i];
+      var hasHeader=initHeader[urlidx];
 
       var fline=csv.split('\n')[0];
       var hdata=[];
       var max_y_columns=0; // should use this to do sanity check, 
       $.csv.toArray(fline, {}, function(err, data) {
-//window.console.log(data);
         if(hasHeader) {
           hdata=data; 
           } else {
@@ -315,27 +317,27 @@ function loadAndProcessCSVfromFile(urls) {
           data.splice(0,0,hdata); 
         }
 
-        if(initSkip.length>i) {
-          var skip=initSkip[i];
+        if(initSkip.length>urlidx) {
+          var skip=initSkip[urlidx];
           data.splice(0,1);
         }
         initPlot_data.push(data);
 window.console.log("csv data length is..",data.length);
 
 // if there is xy mode, then to build initYidx and initXidx
-        if( initXY[i] != null) {
-          var cnt=initPlot_label[i].length;
+        if( initXY[urlidx] != null) {
+          var cnt=initPlot_label[urlidx].length;
           var xidx=[];
           var yidx=[];
           while(true) {
-            if(initXY[i]=='sharex') {
+            if(initXY[urlidx]=='sharex') {
               xidx.push(0);
               for(var x=1;x<cnt;x++) {
                 yidx.push(x); 
               }
               break;
             }
-            if(initXY[i]=='interleave') {
+            if(initXY[urlidx]=='interleave') {
               for(var x=0;x<cnt;x++) {
                 xidx.push(x);
                 x++;
@@ -343,8 +345,8 @@ window.console.log("csv data length is..",data.length);
               }
               break;
             }
-            { // then initXY[i]=[{x:0,y:1},{x:2,y:3}..]
-              var tmp=initXY[i];
+            { // then initXY[urlidx]=[{x:0,y:1},{x:2,y:3}..]
+              var tmp=initXY[urlidx];
               var xya = JSON.parse(tmp);
               for(var a=0; a < xya.length; a++) {
                 var item=xya[a];
@@ -356,15 +358,15 @@ window.console.log("csv data length is..",data.length);
               break;
             }
           }
-          initXidx[i]=xidx; // replace
-          initYidx[i]=yidx; // replace
+          initXidx[urlidx]=xidx; // replace
+          initYidx[urlidx]=yidx; // replace
         }
 // if there is trace, then to build marker, color and alias list
 // trace = [ { "id":0,"name":"firstTrace",'color':'blue','marker':'lines+markers'},
         { // user is supplying a new set of alias
-          var alias=initAlias[i];
-          var yidx=initYidx[i];
-          if(initTrace[i] != null) {
+          var alias=initAlias[urlidx];
+          var yidx=initYidx[urlidx];
+          if(initTrace[urlidx] != null) {
             var marker=[];
             var color=[];
             var alias=[];
@@ -373,45 +375,58 @@ window.console.log("csv data length is..",data.length);
                color[a]=getDefaultColor(a);
                alias[a]=null;
             }
-            var tmp=initTrace[i];
+            var tmp=initTrace[urlidx];
             var trace = JSON.parse(tmp);
             for(var a=0; a < trace.length; a++) {
               var item=trace[a];
-              var id=parseInt(item['id']);
+              var id=null;
+              var klist=Object.keys(item);
+              var ii=klist.find(function(m) { return m=='id' });
+              var ll=klist.find(function(m) { return m=='label'});
+              if ( ii != undefined) {
+                  id=parseInt(item['id']);
+                  } else {
+                    if( ll != undefined) {
+                      id=lookupYLabel(urlidx,item['label']);
+                    } else {
+                      alertify.error("Fail: bad trace item");
+                    } 
+              }
               var _name=item['name'];
               var _color=item['color'];
               var _marker=item['marker'];
-              marker[id]=_marker;
-              color[id]=_color;
-              alias[id]=_name;
+
+              if(_marker) marker[id]=_marker;
+              if(_color) color[id]=_color;
+              if(_name) alias[id]=_name;
             }
-            initMarker[i]=marker;
-            initColor[i]=color;
-            initAlias[i]=alias;
+            initMarker[urlidx]=marker;
+            initColor[urlidx]=color;
+            initAlias[urlidx]=alias;
           }
 // fill in matching alias with column label name 
 //                  color with default color
 //                  maker as 'lines'
 // if there are no user supplied values to them
           for(var j=0; j<yidx.length;j++) {
-            if(initAlias[i].length < j || 
-                      initAlias[i][j] == null) {
-              initAlias[i][j]= getYLabel(i,yidx[j]);
+            if(initAlias[urlidx].length < j || 
+                      initAlias[urlidx][j] == null) {
+              initAlias[urlidx][j]= getYLabel(urlidx,yidx[j]);
             }
-            if(initColor[i].length < j || 
-                      initColor[i][j] == null) {
-              initColor[i][j]=getDefaultColor(j);
+            if(initColor[urlidx].length < j || 
+                      initColor[urlidx][j] == null) {
+              initColor[urlidx][j]=getDefaultColor(j);
             }
-            if(initMarker[i].length < j || 
-                      initMarker[i][j] == null) {
-              initMarker[i][j]='lines';
+            if(initMarker[urlidx].length < j || 
+                      initMarker[urlidx][j] == null) {
+              initMarker[urlidx][j]='lines';
             }
           }
         }
       });
 
-      if(initLabel.length >= i && initLabel[i] != null) {
-        nlist.push(initLabel[i]);
+      if(initLabel.length >= urlidx && initLabel[urlidx] != null) {
+        nlist.push(initLabel[urlidx]);
         } else { 
           var fstub=chopForStub(url);
           nlist.push(fstub);
@@ -443,7 +458,19 @@ function ckExist(url) {
 // something default for now
 function getYLabel(pidx,idx) {
    var list=initPlot_label[pidx];
-   return list[idx];
+   return list[idx].trim();
+}
+
+function lookupYLabel(pidx,label) {
+   var yidx=initYidx[pidx];  // list of column idx being used for traces
+   var list=initPlot_label[pidx];
+   for(var i=0; i<yidx.length;i++) {
+      var j=yidx[i];
+      var t=list[j].trim();
+      if(label == t)
+        return i;
+   }
+   alertify.error("Fail: none-existing column label -> ",label);
 }
 
 // return datalist and a color list
