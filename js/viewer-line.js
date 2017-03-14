@@ -650,4 +650,38 @@ x=0&y=1&y=2&y=3&y=4&y=5&y=6&y=7&y=8&y=9&y=10&y=11&xaxis=Temperature&
 yaxis=Y&marker='lines'&alias=First&alias=Second&alias=Third&
 xaxis='2nd Temperature'&title='Title2'
 
+http://localhost/line-viewer/view.html?metaurl=http://localhost/data/lines/meta.json
+metaurl
+each file has one or more these parameters
+[{ 
+"url": "http://localhost/data/synapse/segments-dummy.csv",
+"aliasLabel":"firstFile", 
+"xaxis":"temperature",
+"yaxis":"Y axis",
+"header":true,
+"skiprow":1,
+"xy": "interleave", "shareX" 
+      or [ {"x":0,"y":1},{"x":2,"y":3},...]
+"trace":  each trace in a file has or more of these parameters
+  [{ 
+  "id":0,  // or "label":columnname, that will be used to lookup id
+  "name":"firstTrace", // alias
+  'color':'blue',
+  'marker':'lines+markers'
+  },...]
+},...]
+
+
+currently..
+// xy = (chars) xy index mode: 'shareX', 'interleave' or
+//         [ {"x":0,"y":1},{"x":2,"y":3}..]
+//     x = (integer) csv column idx
+//     y = (integer) csv column idx
+// trace = [ { "id":0,"name":"firstTrace","color":"blue","marker":"lines+markers"},
+//           { "label":"column-header","name":"thirdTrace"}]
+//           { "id":3,"name":"fourthTrace","marker":"lines"}] **
+// plot = [ { "xaxis":"temperature", "yaxis":"Y",
+//            "skiprow":1, "name":"firstFile",
+//            "header":true } ]
+
 **************************************************************************/
