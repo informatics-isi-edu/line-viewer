@@ -3,6 +3,7 @@
 //
 // This is very dataset specific information
 // for, USC
+//
 // allow for multiple files input with same csv format
 // and then a set of parameter to designate x and multiple y
 // optionally alias name per y, color per y, 
@@ -13,19 +14,19 @@
 var initXidx=[];  // column idx to be used for x axis
 var initYidx=[];  // column idx to be used for data lines
 var initAlias=[]; // alias for each header lines to be used as label
-var initColor=[]; //initial color supplied by user
-var myColor=[];   // color to be used - merged from initColor&defaultColor
-var initSkip=[];  // skip how many lines as part of header
-var initXAxis=[];
-var initYAxis=[];
-var initMarker=[]; 'markers', 'lines', 'lines+markers'
+var initMarker=[];// 'markers', 'lines', 'lines+markers'
+var initColor=[]; // color of the marker
+var initSkip=[];  // skip how many lines to skip after the header (1st row)
+var initXAxis=[]; // label for x axis
+var initYAxis=[]; // label for y axis
 var initTitle=[]; // title for the plot,
 var initLabel=[]; // label for the datafile
-var initXY=[]; // mode for picking x, y index
-var initTrace=[]; // trace for storing trace property
+var initXY=[];    // for picking x, y index, and pairing
+var initTrace=[]; // for storing trace property
 var initHeader=[]; // true/false to show if csv file has a row of header
                    // or not, if false, then header label needs to be
                    // supplement with index of column
+var myColor=[];   // color to be used - merged from initColor&defaultColor
 
 // http://localhost/synapse/view.html?
 //     url=http://localhost/data/synapse/segments-dummy.csv
@@ -35,22 +36,24 @@ var initHeader=[]; // true/false to show if csv file has a row of header
 // 
 // xy = (chars) xy index mode: 'shareX', 'interleave' or
 //         [ {"x":0,"y":1},{"x":2,"y":3}..]
-//   x = (integer) csv column idx
-//   y = (integer) csv column idx
+//     x = (integer) csv column idx
+//     y = (integer) csv column idx
 // trace = [ { "id":0,"name":"firstTrace","color":"blue","marker":"lines+markers"},
 //           { "headerY":"column-header","name":"thirdTrace"}]
 //           { "id":3,"name":"fourthTrace","marker":"lines"}] **
-//   alias = (chars) trace name , default(column name)
-//   color = (chars) trace color  
-//   marker = (chars) 'markers'(default), 'lines', or 'lines+markers'
+//     alias = (chars) trace name , default(column name)
+//     color = (chars) trace color  
+//     marker = (chars) 'markers'(default), 'lines', or 'lines+markers'
 //
-// xaxis = (chars) xaxis label
-// yaxis = (chars) yaxis label
-// skip = (integer) number of lines to skip for the header
-// aliasLabel = (chars) label for datafile, default(file stub)
+// plot = [ { "xaxis":"temperature", "yaxis":"Y",
+//            "skiprow":1, "name":"firstFile",
+//            "header":true } ]
+//     xaxis = (chars) xaxis label
+//     yaxis = (chars) yaxis label
+//     aliasLabel = (chars) label for datafile, default(file stub)
 //
-// header = true or false, to handle bare csv file
-// skip = (integer) number of lines to skip after the first row of header
+//     header = true or false, to handle bare csv file
+//     skiprow = (integer) number of lines to skip after the first row of header
 // 
 // ** using trace to define th trace characteristics is limited in
 //    several ways, it assumes, y column can only be used once and only
@@ -59,8 +62,9 @@ var initHeader=[]; // true/false to show if csv file has a row of header
 //    but not necessarily
 
 
-
 function processArgs(args) {
+  var trackidx=null;  // tracking trace idx
+  var hasidx=false;   // backward compatiable when there is no idx setting
   var urls=[];
   var xidx=[];
   var yidx=[];
@@ -76,6 +80,7 @@ function processArgs(args) {
   var label=null;
   var marker=[];;
   var first=true;
+window.console.log(args[1]);
   var params = args[1].split('&');
   for (var i=0; i < params.length; i++) {
     var param = unescape(params[i]);
@@ -84,10 +89,19 @@ function processArgs(args) {
       urls.push(tmp);
       } else {
         var kvp = param.split('=');
-        switch (kvp[0].trim()) {
+
+var myProcessArg=function(kvp0, kvp1) {
+        switch (kvp0.trim()) {
+          case 'idx': // indexing into trace list
+            {
+            var t=parseInt(kvp1);
+            if(!isNaN(t))
+               traceidx=t;
+            break;
+            }
           case 'url':
             {
-             var tmp=kvp[1].replace(new RegExp('/$'),'').trim();
+             var tmp=kvp1.replace(new RegExp('/$'),'').trim();
              urls.push(tmp);
 //window.console.log("found..",tmp);
              // reset the x-idx and y-idx set
@@ -133,14 +147,14 @@ function processArgs(args) {
              }
           case 'x':
              {
-             var t=parseInt(kvp[1]);
+             var t=parseInt(kvp1);
              if(!isNaN(t))
                xidx.push(t);
              break;
              }
           case 'y':
              {
-             var t=parseInt(kvp[1]);
+             var t=parseInt(kvp1);
              if(!isNaN(t)) {
                yidx.push(t);
              }
@@ -148,83 +162,133 @@ function processArgs(args) {
              }
           case 'alias': 
              {
-             var t=trimQ(kvp[1]);
+             var t=trimQ(kvp1);
              alias.push(t);
              break;
              }
           case 'color': 
              {
-             var t=trimQ(kvp[1]);
+             var t=trimQ(kvp1);
              color.push(t);
              break;
              }
           case 'xaxis': 
              {
-             var t=trimQ(kvp[1]);
+             var t=trimQ(kvp1);
              xaxis=t;
              break;
              }
           case 'yaxis': 
              {
-             var t=trimQ(kvp[1]);
+             var t=trimQ(kvp1);
              yaxis=t;
              break;
              }
           case 'marker':
              {
-             var t=trimQ(kvp[1]);
+             var t=trimQ(kvp1);
              marker.push(t);
              break;
              }
 // this is the number of lines to skip for header..
-          case 'skip': 
+          case 'skiprow': 
              {
-             var t=parseInt(kvp[1]);
+             var t=parseInt(kvp1);
              if(!isNaN(t))
                skip=t;
              break;
              }
           case 'title': 
              {
-             var t=trimQ(kvp[1]);
+             var t=trimQ(kvp1);
              title=t;
              break;
              }
           case 'header': 
              {
-             var t=trimQ(kvp[1]);
-             header=true; 
-             if(t=='false')
-               header=false;
+             header=kvp1; 
              break;
              }
           case 'xy': 
              {
-             var t=trimQ(kvp[1]);
+             var t=trimQ(kvp1);
              xy=t;
              break;
              }
           case 'trace': 
              {
-             var t=trimQ(kvp[1]);
+             var t=trimQ(kvp1);
              trace=t;
              break;
              }
           case 'aliasLabel': 
              {
-             var t=trimQ(kvp[1]);
+             var t=trimQ(kvp1);
              label=t;
              break;
              }
+          case 'plot': 
+             {
+// plot = [ { "xaxis":"temperature", "yaxis":"Y",
+//            "skiprow":1, "name":"firstFile",
+//            "header":true } ]
+             var t=trimQ(kvp1);
+window.console.log(t); 
+             var items;
+             if( typeof t === 'object') {
+               items=t; 
+               } else {
+                 items = JSON.parse(t);
+             }
+             for( var pidx in items ) {
+                var p=items[pidx]; // for a single plot
+                for(var tidx in p ) {
+                   var t=p[tidx]; // for a single plot
+window.console.log("plots:", tidx, " ",t);
+                   myProcessArg(tidx, t);
+                }
+             }
+             break;
+             }
+         case "metaurl":
+             {
+             var furl=trimQ(kvp1);
+             var t=ckExist(furl);
+             myProcessArg('meta', t);
+             break;
+             }
+         case "meta":
+             {
+             var t=trimQ(kvp1);
+             var items = JSON.parse(t);
+             for( var pidx in items ) {
+                var p=items[pidx]; // for a single plot
+window.console.log("p is", p);
+// special case,  if there is no url in here, stuff in a dummy one
+                var t=p['url'];
+                if(t == undefined) {
+                  alertify.error("Fail: must supply an url");
+                }
+                for(var tidx in p ) {
+                   var t=p[tidx]; // for a single plot
+window.console.log("plots:", tidx, " ",t);
+                   myProcessArg(tidx, t);
+                }
+             }
+             break;
+             }
           default: { 
-window.console.log("dropping this...",kvp[0].trim());
+window.console.log("dropping this...",kvp0.trim());
              /* drop this..*/
              break;
              }
        }
+}; // funciton myProcessArg
+window.console.log("kvp ..", kvp[0], " ", kvp[1]);
+       myProcessArg(kvp[0], kvp[1]);
     }
   }
-  {
+  { // last part
     if(xidx.length == 0)
       xidx.push(0);
     if(yidx.length == 0)
@@ -262,12 +326,18 @@ function getOriginalDataByIdx(data,idx) {
    return alist;
 }
 
-function trimQ(alias) {
-  var str=alias.trim(); // trim the ' or "
-  if( (str[0] == "\"" && str[ str.length-1 ] == "\"")
-   || (str[0] == "\'" && str[ str.length-1 ] == "\'"))
-  str=str.substr(1,str.length-2);
-  return str;
+function trimQ(s) {
+// trim if only if alias is a string
+
+  if( s && typeof s === 'string') { 
+    var str=s.trim(); // trim the ' or "
+    if( (str[0] == "\"" && str[ str.length-1 ] == "\"")
+     || (str[0] == "\'" && str[ str.length-1 ] == "\'"))
+    str=str.substr(1,str.length-2);
+    return str;
+  }
+window.console.log("trimming.. type is ",typeof s); 
+  return s;
 }
 
 // given an array of values, return an array of log values
@@ -352,7 +422,13 @@ function loadAndProcessCSVfromFile(urls) {
             }
             { // then initXY[urlidx]=[{x:0,y:1},{x:2,y:3}..]
               var tmp=initXY[urlidx];
-              var xya = JSON.parse(tmp);
+              // parse only if it is in a string
+              var xya;
+              if( typeof tmp === 'object') {
+                xya=tmp;
+                } else {
+                  xya = JSON.parse(tmp);
+              }
               for(var a=0; a < xya.length; a++) {
                 var item=xya[a];
                 var xx=item['x'];
@@ -381,7 +457,12 @@ function loadAndProcessCSVfromFile(urls) {
                alias[a]=null;
             }
             var tmp=initTrace[urlidx];
-            var trace = JSON.parse(tmp);
+            var trace;
+            if( typeof tmp === 'object') {
+              trace=tmp;
+              } else {
+                trace = JSON.parse(tmp);
+            }
             for(var a=0; a < trace.length; a++) {
               var item=trace[a];
               var id=null;
@@ -467,7 +548,7 @@ function getHeaderY(pidx,idx) {
 }
 
 // given a label, look up which trace is it being used 
-// in the tracelist, start is where to start searching
+// in the tracelist as part of Y, start is where to start searching
 // this is to allow multiple y in the trace pairing
 function lookupHeaderYInTrace(pidx,label, start) {
    var yidx=initYidx[pidx];  // list of column idx being used for traces
@@ -475,6 +556,34 @@ function lookupHeaderYInTrace(pidx,label, start) {
    for(var i=start; i<yidx.length;i++) {
       var j=yidx[i];
       var t=list[j].trim();
+      if(label == t)
+        return i;
+   }
+   alertify.error("Fail: none-existing trace's Y label -> ",label);
+}
+
+// given a label, look up which trace is it being used 
+// in the tracelist as part of X, start is where to start searching
+// this is to allow multiple x in the trace pairing
+function lookupHeaderXInTrace(pidx,label, start) {
+   var xidx=initXidx[pidx];  // list of column idx being used for traces
+   var list=initPlot_label[pidx];
+   for(var i=start; i<xidx.length;i++) {
+      var j=xidx[i];
+      var t=list[j].trim();
+      if(label == t)
+        return i;
+   }
+   alertify.error("Fail: none-existing trace's X label -> ",label);
+}
+
+// given a label, look up the column idx that matches
+// it. Take care of none-unique column name, use start
+// as initial starting index
+function lookupHeaderInColumn(pidx,label,start) {
+   var list=initPlot_label[pidx];
+   for(var i=start; i<list.length;i++) {
+      var t=list[i].trim();
       if(label == t)
         return i;
    }
@@ -497,3 +606,48 @@ function getPlotData(pidx) {
    return [p,xidx, yidx, clist,alist, mlist, xaxis,yaxis,title,label];
 }
 
+
+/**************************************************************************
+  test examples
+
+http://localhost/line-viewer/view.html?url=http://localhost/data/lines/data.csv
+
+http://localhost/line-viewer/view.html?url=http://localhost/data/lines/data.csv&
+xy=[{"x":0,"y":1},{"x":0,"y":2},{"x":0,"y":3},{"x":0,"y":4}]
+
+http://localhost/line-viewer/view.html?url=http://localhost/data/lines/data.csv&
+xy=[{"x":0,"y":1},{"x":0,"y":2},{"x":0,"y":3},{"x":0,"y":4}]&
+xaxis='Temperature'&yaxis='Y axis'&title='Title of the plot'&
+trace=[{"id":0,"name":"firstTrace","color":"purple","marker":"lines+markers"},
+{"label":"5179_PGE2","name":"secondTrace"},
+{"id":3,"name":"fourthTrace","marker":"markers"}]
+
+http://localhost/line-viewer/view.html?url=http://localhost/data/lines/data.csv&
+xy=[{"x":0,"y":1},{"x":2,"y":3},{"x":4,"y":5},{"x":6,"y":7}]&xaxis=Temperature&
+yaxis='Y axis'&marker='lines'&alias='First line'&title='Title of the plot'
+
+http://localhost/line-viewer/view.html?url=http://localhost/data/lines/data.csv&
+x=0&y=1&x=2&y=3&x=4&y=5&x=6&y=7&xaxis='Temperature'&yaxis='Y axis'&
+marker=lines&alias='First line'&title='Title of the plot'
+
+//Heat, 4668_PGE2, 5179_PGE2, 5183_PGE2, 5184_PGE2, 5202_PGE2, 5209_PGE2, 5238_PGE2, 5300_PGE2, 5305_PGE2, 5307_PGE2, noreceptor_PGE2
+http://localhost/line-viewer/view.html?url=http://localhost/data/lines/data.csv&
+x=0&y=1&y=2&y=3&y=4&y=5&y=6&y=7&y=8&y=9&y=10&y=11&xaxis=Temperature&yaxis=Y&
+marker='lines'&alias=4668_PGE2&alias=5179_PGE2&alias=5183_PGE2
+
+http://localhost/line-viewer/view.html?url=http://localhost/data/lines/data.csv&
+xaxis=Temperature&yaxis='Y axis'&marker='markers+lines'&alias='First line'&
+title='Title of the plot'&aliasLabel=datafile#1&xy=interleave&
+url=http://localhost/data/lines/data2.csv&xaxis=Temperature&yaxis=Y&
+marker=lines&alias=First&alias=Second&alias=Third&xy=shareX
+
+http://localhost/line-viewer/view.html?url=http://localhost/data/lines/data.csv&
+x=0&y=1&x=2&y=3&x=4&y=5&x=6&y=7&xaxis=Temperature&yaxis='Y axis'&
+marker="markers"&marker='markers+lines'&alias='First line'&
+title='Title of the plot'&aliasLabel='datafile#1'&
+url=http://localhost/data/lines/data2.csv&
+x=0&y=1&y=2&y=3&y=4&y=5&y=6&y=7&y=8&y=9&y=10&y=11&xaxis=Temperature&
+yaxis=Y&marker='lines'&alias=First&alias=Second&alias=Third&
+xaxis='2nd Temperature'&title='Title2'
+
+**************************************************************************/

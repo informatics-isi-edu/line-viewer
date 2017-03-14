@@ -8,8 +8,8 @@
 //  http://localhost/gpcr/other_viewer/view.html?
 //     url=http://localhost/data/other_viewer/data-dummy.csv
 //
-//  take 1 csv file and display a plotly line char with
-//   multiple trace lines 
+//  see viewer-line.js for more examples
+//
 
 var  initPlot_data=[]; // very first set of original data
 var  initPlot_label=[]; // very first set of original data's label
@@ -86,6 +86,9 @@ jQuery(document).ready(function() {
          alertify.error("Usage: view.html?http://datapath/data.csv");
          return;
      }
+     } else {
+       alertify.error("Usage: view.html?http://datapath/data.csv");
+       return;
   }
 
   if(!enableEmbedded) {
