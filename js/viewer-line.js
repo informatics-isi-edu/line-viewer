@@ -627,56 +627,103 @@ function getPlotData(pidx) {
 
 
 /**************************************************************************
-  test examples
+  sample examples
 
-http://localhost/line-viewer/view.html?url=http://localhost/data/lines/data.csv
+http://localhost/line-viewer/view.html?
+  url=http://localhost/data/lines/data.csv
 
-http://localhost/line-viewer/view.html?url=http://localhost/data/lines/data.csv&
-xylayout=[{"x":0,"y":1},{"x":0,"y":2},{"x":0,"y":3},{"x":0,"y":4}]
+http://localhost/line-viewer/view.html?
+  url=http://localhost/data/lines/data.csv&
+    xylayout=[{"x":0,"y":1},{"x":0,"y":2},{"x":0,"y":3},{"x":0,"y":4}]
 
-http://localhost/line-viewer/view.html?url=http://localhost/data/lines/data.csv&
-xylayout=[{"x":0,"y":1},{"x":0,"y":2},{"x":0,"y":3},{"x":0,"y":4}]&
-xaxis='Temperature'&yaxis='Y axis'&title='Title of the plot'&
-trace=[{"id":0,"name":"firstTrace","color":"purple","marker":"lines+markers"},
-{"label":"5179_PGE2","name":"secondTrace"},
-{"id":3,"name":"fourthTrace","marker":"markers"}]
+http://localhost/line-viewer/view.html?
+  url=http://localhost/data/lines/data.csv&
+    xylayout=[{"x":0,"y":1},{"x":0,"y":2},{"x":0,"y":3},{"x":0,"y":4}]&
+    xaxislabel='Temperature'&
+    yaxislabel='Y axis'&
+    title='Title of the plot'&
+    trace=[{"id":0,"name":"firstTrace","color":"purple","marker":"lines+markers"},
+        {"label":"5179_PGE2","name":"secondTrace"},
+        {"id":3,"name":"fourthTrace","marker":"markers"}]
 
-http://localhost/line-viewer/view.html?url=http://localhost/data/lines/data.csv&
-xylayout=[{"x":0,"y":1},{"x":2,"y":3},{"x":4,"y":5},{"x":6,"y":7}]&xaxis=Temperature&
-yaxis='Y axis'&marker='lines'&alias='First line'&title='Title of the plot'
+http://localhost/line-viewer/view.html?
+  url=http://localhost/data/lines/data.csv&
+    xylayout=[{"x":0,"y":1},{"x":2,"y":3},{"x":4,"y":5},{"x":6,"y":7}]&
+    xaxislabel=Temperature&
+    yaxis='Y axis'&
+    marker='lines'&
+    alias='First line'&
+    title='Title of the plot'
 
-http://localhost/line-viewer/view.html?url=http://localhost/data/lines/data.csv&
-x=0&y=1&x=2&y=3&x=4&y=5&x=6&y=7&xaxis='Temperature'&yaxis='Y axis'&
-marker=lines&alias='First line'&title='Title of the plot'
+http://localhost/line-viewer/view.html?
+  url=http://localhost/data/lines/data.csv&
+    x=0&y=1&x=2&y=3&x=4&y=5&x=6&y=7&
+    xaxis='Temperature'&
+    yaxis='Y axis'&
+    marker=lines&
+    alias='First line'&
+    title='Title of the plot'
 
 //Heat, 4668_PGE2, 5179_PGE2, 5183_PGE2, 5184_PGE2, 5202_PGE2, 5209_PGE2, 5238_PGE2, 5300_PGE2, 5305_PGE2, 5307_PGE2, noreceptor_PGE2
-http://localhost/line-viewer/view.html?url=http://localhost/data/lines/data.csv&
-x=0&y=1&y=2&y=3&y=4&y=5&y=6&y=7&y=8&y=9&y=10&y=11&xaxis=Temperature&yaxis=Y&
-marker='lines'&alias=4668_PGE2&alias=5179_PGE2&alias=5183_PGE2
+http://localhost/line-viewer/view.html?
+  url=http://localhost/data/lines/data.csv&
+    x=0&y=1&y=2&y=3&y=4&y=5&y=6&y=7&y=8&y=9&y=10&y=11&
+    xaxis=Temperature&
+    yaxis=Y&
+    marker='lines'&
+    alias=4668_PGE2&
+    alias=5179_PGE2&
+    alias=5183_PGE2
 
-http://localhost/line-viewer/view.html?url=http://localhost/data/lines/data.csv&
-xaxis=Temperature&yaxis='Y axis'&marker='markers+lines'&alias='First line'&
-title='Title of the plot'&aliaslabel=datafile#1&xylayout=interleave&
-url=http://localhost/data/lines/data2.csv&xaxis=Temperature&yaxis=Y&
-marker=lines&alias=First&alias=Second&alias=Third&xylayout=shareX
+http://localhost/line-viewer/view.html?
+  url=http://localhost/data/lines/data.csv&
+    xaxis=Temperature&
+    yaxis='Y axis'&
+    marker='markers+lines'&
+    alias='First line'&
+    title='Title of the plot'&
+    aliaslabel=datafile#1&
+    xylayout=interleave&
+  url=http://localhost/data/lines/data2.csv&
+    xaxis=Temperature&
+    yaxis=Y&
+    marker=lines&
+    alias=First&
+    alias=Second&
+    alias=Third&
+    xylayout=shareX
 
-http://localhost/line-viewer/view.html?url=http://localhost/data/lines/data.csv&
-x=0&y=1&x=2&y=3&x=4&y=5&x=6&y=7&xaxis=Temperature&yaxis='Y axis'&
-marker="markers"&marker='markers+lines'&alias='First line'&
-title='Title of the plot'&aliaslabel='datafile#1'&
-url=http://localhost/data/lines/data2.csv&
-x=0&y=1&y=2&y=3&y=4&y=5&y=6&y=7&y=8&y=9&y=10&y=11&xaxis=Temperature&
-yaxis=Y&marker='lines'&alias=First&alias=Second&alias=Third&
-xaxis='2nd Temperature'&title='Title2'
+http://localhost/line-viewer/view.html?
+  url=http://localhost/data/lines/data.csv&
+    x=0&y=1&x=2&y=3&x=4&y=5&x=6&y=7&
+    xaxislabel=Temperature&
+    yaxislabel='Y axis'&
+    marker="markers"&
+    marker='markers+lines'&
+    alias='First line'&
+    title='Title of the plot'&
+    aliaslabel='datafile#1'&
+  url=http://localhost/data/lines/data2.csv&
+    x=0&y=1&y=2&y=3&y=4&y=5&y=6&y=7&y=8&y=9&y=10&y=11&
+    xaxislabel='2nd Temperature'&
+    yaxislabel=Y&
+    marker='lines'&
+    alias=First&
+    alias=Second&
+    alias=Third&
+    title='Title2'
 
-http://localhost/line-viewer/view.html?metaurl=http://localhost/data/lines/meta.json
+
+http://localhost/line-viewer/view.html?
+  metaurl=http://localhost/data/lines/meta.json
+
 metaurl
 each file has one or more these parameters
 [{ 
 "url": "http://localhost/data/synapse/segments-dummy.csv",
 "aliaslabel":"firstFile", 
-"xaxis":"temperature",
-"yaxis":"Y axis",
+"xaxislabel":"temperature",
+"yaxislabel":"Y axis",
 "header":true,
 "skiprow":1,
 "xylayout": "interleave", "shareX" 

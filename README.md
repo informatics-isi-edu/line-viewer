@@ -46,7 +46,7 @@ Each trace is assigned a name using the name of its Y column.  In addition, a tr
 
 Traces are grouped into named plots.  By default, all of the traces in a file are grouped inot a plot which is named by the file name.  Alternative plot names can be assigned using the ``plotname`` parameter.
 
-## Involking line-viewer
+## Invoking line-viewer
 
 Paremeters may be passed to line-viewer as a URL query parameter.  
 
@@ -73,7 +73,7 @@ Parameters may specify options at the file, trace or plot level. The ``url`` for
 
 Click on the blue pull-out icon at upper left corner will slide out a list of datafiles. Toggle the dot icon will switch among the available datafiles. The last option is the combined plot of all datafiles
 
-## Examples
+## Examples 
 
 Plot a line in a single CSV file without any parameter
 
@@ -118,4 +118,6 @@ view.html?url=http://localhost/data/data1.csv&
              alias=Third&
              title=Title2
 ```
+
+More sample examples in viewer-line.js
 
