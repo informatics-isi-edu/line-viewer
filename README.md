@@ -55,23 +55,23 @@ Parameters may specify options at the file, trace or plot level. The ``url`` for
 
 | Parameter | Value | Level | Description |
 | --- | --- | --- | --- |
-| **url** | URL1,URL2, ... | Plot | A set of URLs of the CSV files to be used for each plot. Usually, one URL is used.|
-| **url proposed** | URL1;csvlayout;alias,URL2;csvlayout;alias, ... | Plot | A set of URLs of the CSV files to be used for each plot. For each URL you can optionally specify the layout and a file alias to be used to name the file columns.  The csvlayout can be sharedx, interleaved, or custom, with the default being sharedx.  If omitted, the file alias will default to the last component of the URL.  If the same last component of the URL path appears in more then one URL, then the file alias must be provided to disambiguate.|
-| **csvlayout** | filename:(sharedx\|interleaved\|custom), ... | File | specific organization of traces within the CSV file | 
-| **traces** | filename:X1;Y1,X2;Y2,... | File | A set of columns to be used for plotting the traces. If csvlayout is custom, provides a list of trace definitions, otherwise ignore. Trace definition can use column heading (if available) or column indexes. Can occur more then once.|
-| **tracenames** | ycolumnname1:tracename1,ycolumname2:tracename2,... | trace  | By default, a trace is named by the name of its Y column (i.e. its index or heading value). You can override the default trace name using this parameter.  This parameter can occur more then once.|
-| **color** | ycolumnname1:color1,ycolumnname2:color2,... | Plot | A color can be specified in the RGB values, text, or color number e.g. **rgb(16,32,77)**, **blue**, **10204D**, or **#10204D**. There is a default set of color being used if none is specified |
-| **marker** | ycolumnname1:(lines\|markers\|lines+markers), ... | Plot | what to draw for the traces. Default is lines. Either lines, points for the data points, or both the lines and points |
-| **xaxislabel** | plotname:label, ... | Plot | X axis label |
-| **yaxislabel** | plotname:label, ... | Plot | Y axis label |
-| **skiprows** | filename:integer, ... | File |  number of lines to skip in the beginning of the file. It defaults to 0.|
-| **header** | filename:(true\|false) | File | Header (default to true) indicates whether a header row is provided in the data set.  The header row is the (**skiprows**+1)th row. |
-| **title** | plotname:titlestring, ... | Plot | title of the plot |
-| **plotname** | name:(filename\|tracelist), ... | Plot | label for datafile, default(file stub) shows up in the pull-out panel. In future version, this parameter will also allow you to specify a list of traces to be defined as a plot |
+| **url** | URL | file | One or more URLs of the CSV datafiles to be used for each plot. For each URL you can optionally specify the layout |
+| **xylayout** | chars | file | Layout for selecting CSV columns used for plotting. **interleave** x=0&y=1&x=2&y=3, first trace uses column 0 for x axis, column 1 for y axis and 2nd trace uses column 2 for x axis and column 3 for y axis; **shareX**, x=0&y=1&y=2, first trace uses column 0 for x axis, column 1 for y axis and 2nd trace uses column 0 for x axis, column 2 for y axis; or explicitly as [ {"x":0,"y":1},{"x":2,"y":3},...] |
+| **x** | integer | trace | CSV column index to be used for x. xylayout takes precedence if declared |
+| **y** | integer | trace | CSV column index to be used for y. xylayout takes precedence if declared |
+| **alias** | chars | trace | Trace name used for labeling the name of trace. Default to column name from CSV header if not supplied |
+| **color** | chars | trace | A color can be specified in the RGB values, text, or color number e.g. **rgb(16,32,77)**, **blue**, **10204D**, or **#10204D**. There is a default set of color being used if none is specified |
+| **marker** | chars | trace |  what to draw for the traces. **lines** just lines; **markers** dots on datapoint ; **lines+markers** dots with lines; Default is lines |
+| **xaxislabel** | chars | file | X axis label |
+| **yaxislabel** | chars | file | Y axis label |
+| **skiprows** | integer | file | number of lines to skip in the beginning of the datafile. Defaults to 0|
+| **title** | chars | file | title of the plot  |
+| **header** | boolean | file | to allow bare CSV file (without header) |
+| **aliaslabel** | chars | file | an alias for the datafile, default(file stub) shows up in the pull-out panel |
 
 ## Multiple Plots
 
-Click on the blue pull-out icon at upper left corner will slide out a list of datafiles. Toggle the eye icons will switch among the available datafiles
+Click on the blue pull-out icon at upper left corner will slide out a list of datafiles. Toggle the dot icon will switch among the available datafiles. The last option is the combined plot of all datafiles
 
 ## Examples
 
@@ -98,20 +98,20 @@ Plot multiple lines from two CSV datafiles with some custom parameters
 
 ```
 view.html?url=http://localhost/data/data1.csv&
-             xy=crossall&
-             xaxis=Temperature&
-             yaxis='Y axis'&
+             xylayout=shareX&
+             xaxislabel=Temperature&
+             yaxislabel='Y axis'&
              marker='markers+lines'&
              alias='First line'&
              title='Title of the plot'&
-             aliasLabel=datafile#1&
+             aliaslabel=datafile#1&
           url=http://localhost/data/data2.csv&
              x=0&
              y=1&
              y=2&
              y=3&
-             xaxis='2nd Temperature'&
-             yaxis=Y&
+             xaxislabel='2nd Temperature'&
+             yaxislabel=Y&
              marker=lines&
              alias=First&
              alias=Second&

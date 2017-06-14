@@ -34,7 +34,7 @@ var myColor=[];   // color to be used - merged from initColor&defaultColor
 
 // per url, first-in first-out
 // 
-// xy = (chars) xy index mode: 'shareX', 'interleave' or
+// xylayout = (chars) xy index mode: 'shareX', 'interleave' or
 //         [ {"x":0,"y":1},{"x":2,"y":3}..]
 //     x = (integer) csv column idx
 //     y = (integer) csv column idx
@@ -50,7 +50,7 @@ var myColor=[];   // color to be used - merged from initColor&defaultColor
 //            "header":true } ]
 //     xaxis = (chars) xaxis label
 //     yaxis = (chars) yaxis label
-//     aliasLabel = (chars) label for datafile, default(file stub)
+//     aliaslabel = (chars) label for datafile, default(file stub)
 //
 //     header = true or false, to handle bare csv file
 //     skiprow = (integer) number of lines to skip after the first row of header
@@ -181,12 +181,14 @@ if(yidx.length > xidx.length) {
              break;
              }
           case 'xaxis': 
+          case 'xaxislabel': 
              {
              var t=trimQ(kvp1);
              xaxis=t;
              break;
              }
           case 'yaxis': 
+          case 'yaxislabel': 
              {
              var t=trimQ(kvp1);
              yaxis=t;
@@ -218,6 +220,7 @@ if(yidx.length > xidx.length) {
              break;
              }
           case 'xy': 
+          case 'xylayout': 
              {
              var t=trimQ(kvp1);
              xy=t;
@@ -230,6 +233,7 @@ if(yidx.length > xidx.length) {
              break;
              }
           case 'aliasLabel': 
+          case 'aliaslabel': 
              {
              var t=trimQ(kvp1);
              label=t;
@@ -628,17 +632,17 @@ function getPlotData(pidx) {
 http://localhost/line-viewer/view.html?url=http://localhost/data/lines/data.csv
 
 http://localhost/line-viewer/view.html?url=http://localhost/data/lines/data.csv&
-xy=[{"x":0,"y":1},{"x":0,"y":2},{"x":0,"y":3},{"x":0,"y":4}]
+xylayout=[{"x":0,"y":1},{"x":0,"y":2},{"x":0,"y":3},{"x":0,"y":4}]
 
 http://localhost/line-viewer/view.html?url=http://localhost/data/lines/data.csv&
-xy=[{"x":0,"y":1},{"x":0,"y":2},{"x":0,"y":3},{"x":0,"y":4}]&
+xylayout=[{"x":0,"y":1},{"x":0,"y":2},{"x":0,"y":3},{"x":0,"y":4}]&
 xaxis='Temperature'&yaxis='Y axis'&title='Title of the plot'&
 trace=[{"id":0,"name":"firstTrace","color":"purple","marker":"lines+markers"},
 {"label":"5179_PGE2","name":"secondTrace"},
 {"id":3,"name":"fourthTrace","marker":"markers"}]
 
 http://localhost/line-viewer/view.html?url=http://localhost/data/lines/data.csv&
-xy=[{"x":0,"y":1},{"x":2,"y":3},{"x":4,"y":5},{"x":6,"y":7}]&xaxis=Temperature&
+xylayout=[{"x":0,"y":1},{"x":2,"y":3},{"x":4,"y":5},{"x":6,"y":7}]&xaxis=Temperature&
 yaxis='Y axis'&marker='lines'&alias='First line'&title='Title of the plot'
 
 http://localhost/line-viewer/view.html?url=http://localhost/data/lines/data.csv&
@@ -652,14 +656,14 @@ marker='lines'&alias=4668_PGE2&alias=5179_PGE2&alias=5183_PGE2
 
 http://localhost/line-viewer/view.html?url=http://localhost/data/lines/data.csv&
 xaxis=Temperature&yaxis='Y axis'&marker='markers+lines'&alias='First line'&
-title='Title of the plot'&aliasLabel=datafile#1&xy=interleave&
+title='Title of the plot'&aliaslabel=datafile#1&xylayout=interleave&
 url=http://localhost/data/lines/data2.csv&xaxis=Temperature&yaxis=Y&
-marker=lines&alias=First&alias=Second&alias=Third&xy=shareX
+marker=lines&alias=First&alias=Second&alias=Third&xylayout=shareX
 
 http://localhost/line-viewer/view.html?url=http://localhost/data/lines/data.csv&
 x=0&y=1&x=2&y=3&x=4&y=5&x=6&y=7&xaxis=Temperature&yaxis='Y axis'&
 marker="markers"&marker='markers+lines'&alias='First line'&
-title='Title of the plot'&aliasLabel='datafile#1'&
+title='Title of the plot'&aliaslabel='datafile#1'&
 url=http://localhost/data/lines/data2.csv&
 x=0&y=1&y=2&y=3&y=4&y=5&y=6&y=7&y=8&y=9&y=10&y=11&xaxis=Temperature&
 yaxis=Y&marker='lines'&alias=First&alias=Second&alias=Third&
@@ -670,12 +674,12 @@ metaurl
 each file has one or more these parameters
 [{ 
 "url": "http://localhost/data/synapse/segments-dummy.csv",
-"aliasLabel":"firstFile", 
+"aliaslabel":"firstFile", 
 "xaxis":"temperature",
 "yaxis":"Y axis",
 "header":true,
 "skiprow":1,
-"xy": "interleave", "shareX" 
+"xylayout": "interleave", "shareX" 
       or [ {"x":0,"y":1},{"x":2,"y":3},...]
 "trace":  each trace in a file has or more of these parameters
   [{ 
@@ -688,7 +692,7 @@ each file has one or more these parameters
 
 
 currently..
-// xy = (chars) xy index mode: 'shareX', 'interleave' or
+// xylayout = (chars) xy index mode: 'shareX', 'interleave' or
 //         [ {"x":0,"y":1},{"x":2,"y":3}..]
 //     x = (integer) csv column idx
 //     y = (integer) csv column idx
