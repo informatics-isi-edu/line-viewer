@@ -55,19 +55,19 @@ Parameters may specify options at the file, trace or plot level. The ``url`` for
 
 | Parameter | Value | Level | Description |
 | --- | --- | --- | --- |
-| **url** | URL | file | One or more URLs of the CSV datafiles to be used for each plot. For each URL you can optionally specify the layout |
-| **xylayout** | chars | file | Layout for selecting CSV columns used for plotting. **interleave** x=0&y=1&x=2&y=3, first trace uses column 0 for x axis, column 1 for y axis and 2nd trace uses column 2 for x axis and column 3 for y axis; **shareX**, x=0&y=1&y=2, first trace uses column 0 for x axis, column 1 for y axis and 2nd trace uses column 0 for x axis, column 2 for y axis; or explicitly as [ {"x":0,"y":1},{"x":2,"y":3},...] |
+| **url** | URL | file/plot | one or more URLs of the CSV datafiles to be used for each plot. For each URL you can optionally specify the layout |
+| **xylayout** | chars | file/plot | layout for selecting CSV columns used for plotting. **interleave** x=0&y=1&x=2&y=3, first trace uses column 0 for x axis, column 1 for y axis and 2nd trace uses column 2 for x axis and column 3 for y axis; **shareX**, x=0&y=1&y=2, first trace uses column 0 for x axis, column 1 for y axis and 2nd trace uses column 0 for x axis, column 2 for y axis; or explicitly as [ {"x":0,"y":1},{"x":2,"y":3},...] |
 | **x** | integer | trace | CSV column index to be used for x. xylayout takes precedence if declared |
 | **y** | integer | trace | CSV column index to be used for y. xylayout takes precedence if declared |
-| **alias** | chars | trace | Trace name used for labeling the name of trace. Default to column name from CSV header if not supplied |
-| **color** | chars | trace | A color can be specified in the RGB values, text, or color number e.g. **rgb(16,32,77)**, **blue**, **10204D**, or **#10204D**. There is a default set of color being used if none is specified |
+| **alias** | chars | trace | trace name used for labeling the name of trace. Default to column name from CSV header if not supplied |
+| **color** | chars | trace | a color can be specified in the RGB values, text, or color number e.g. **rgb(16,32,77)**, **blue**, **10204D**, or **#10204D**. There is a default set of color being used if none is specified |
 | **marker** | chars | trace |  what to draw for the traces. **lines** just lines; **markers** dots on datapoint ; **lines+markers** dots with lines; Default is lines |
-| **xaxislabel** | chars | file | X axis label |
-| **yaxislabel** | chars | file | Y axis label |
-| **skiprows** | integer | file | number of lines to skip in the beginning of the datafile. Defaults to 0|
-| **title** | chars | file | title of the plot  |
-| **header** | boolean | file | to allow bare CSV file (without header) |
-| **aliaslabel** | chars | file | an alias for the datafile, default(file stub) shows up in the pull-out panel |
+| **xaxislabel** | chars | file/plot | X axis label |
+| **yaxislabel** | chars | file/plot | Y axis label |
+| **skiprows** | integer | file/plot | number of lines to skip in the beginning of the datafile. Defaults to 0|
+| **title** | chars | file/plot | title of the plot  |
+| **header** | boolean | file/plot | to allow bare CSV file (without header) |
+| **aliaslabel** | chars | file/plot | an alias for the datafile, default(file stub) shows up in the pull-out panel |
 
 ## Multiple Plots
 
