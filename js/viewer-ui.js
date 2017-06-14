@@ -117,7 +117,7 @@ function add2PlotList(titlelist) {
     addOnePlot(i, pname);
   }
   if(moreThanOnePlot()) {
-    addOnePlot(specialPlotIdx,'ALL'); // very hacky
+    addOnePlot(specialPlotIdx,'combined'); // very hacky
   }
   togglePlot(0, getPlotEyeName(0));
 }

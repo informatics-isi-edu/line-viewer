@@ -3,6 +3,8 @@
 //
 var savePlot=[]; 
 
+//each config=
+//   [p,xidx, yidx, clist,alist, mlist, xaxis,yaxis,title,label]
 function addLinePlot(divname, configs, fwidth, fheight) {
   var pcnt=configs.length; //
   if(pcnt < 1) 
@@ -28,10 +30,10 @@ function addLinePlot(divname, configs, fwidth, fheight) {
 
   for(var i=1; i<pcnt; i++) {
     var t=configs[i];
-    if(t[6]!=null) xaxis=xaxis+t[6];
-    if(t[7]!=null) yaxis=yaxis+t[7];
-    if(t[8]!=null) title=title+t[8];
-    if(t[9]!=null) label=label+t[9];
+    if(t[6]!=null) xaxis=xaxis+","+t[6];
+    if(t[7]!=null) yaxis=yaxis+","+t[7];
+    if(t[8]!=null) title=title+","+t[8];
+    if(t[9]!=null) label=label+","+t[9];
     var pd=t[0];
     var xk=t[1];
     var yk=t[2];
@@ -62,39 +64,6 @@ function addLinePlot(divname, configs, fwidth, fheight) {
   savePlot[0]=plot;
   return plot;
 } 
-
-//[p,xidx, yidx, clist,alist, mlist, xaxis,yaxis,title,label];
-//addLinesPlot2(pdata, config, frameWidth-5, frameHeight-5);
-function addLinesPlot(divname, config, fwidth, fheight) {
-  var pdata=config[0];
-  var xkeys=config[1];
-  var ykeys=config[2];
-  var clist=config[3];
-  var alist=config[4];
-  var mlist=config[5];
-
-  var xaxis=config[6];
-  var yaxis=config[7];
-  var title=config[8];
-  var label=config[9];
-
-  var xrange=getMinMax(pdata,xkeys,true);
-  var yrange=getMinMax(pdata,ykeys,true);
-
-  var _data=getLinesAt(pdata,xkeys,ykeys,clist,mlist,alist);
-  var _layout=getLinesDefaultLayout(fwidth, fheight,xaxis,yaxis,xrange,yrange,title);
-  var _width=fwidth;
-  var _height=fheight;
-
-  if(fwidth > 400)
-    plot=addAPlot(divname,_data, _layout, _width, _height, true);
-    else
-      plot=addAPlot(divname,_data, _layout, _width, _height, false);
-
-  savePlot[0]=plot;
-  return plot;
-} 
-
 
 function makeOneTrace(pdata,xkey,ykey,cval, mmode,name) {
   var xval=getOriginalDataByKey(pdata, xkey);
