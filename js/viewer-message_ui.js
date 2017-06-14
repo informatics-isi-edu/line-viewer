@@ -9,8 +9,9 @@ window.addEventListener('message', function(event) {
         var messageType = event.data.messageType;
         var data = event.data.content;
         switch (messageType) {
-            case 'toggleHeatScale':
-                togglePlotHeat(0,'fire_3DScatter');
+// this is just a placeholder for example
+            case 'togglePlot':
+                togglePlot(0,'somePlot'); // plot_idx, plotname
                 break;
             default:
                 console.log('No action performed from event handler. Received message event: ', messageType);

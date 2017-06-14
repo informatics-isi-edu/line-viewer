@@ -11,9 +11,11 @@ if (window.self !== window.top) {
 }
 
 var trackingPlot=[];
+var specialPlotIdx=99;
+var specialPnameEye='99_plot_eye_name';
+var trackingSpecial=false;
 
 function moreThanOnePlot(){
-//window.console.log("trackingPlot..", trackingPlot.length);
   if(trackingPlot.length > 1)
     return true;
   return false;
@@ -50,16 +52,16 @@ function setupPlotList(cnt) {
 // glyphicon-eye-close = glyphicon-one-fine-empty-dot
 // glyphicon-eye-open = glyphicon-one-fine-full-dot
 // 
-function togglePlot(plot_idx, pname) {
-  var tmp='#'+pname;
+function togglePlot(plot_idx, pname_eye) {
+  var tmp='#'+pname_eye;
   var eptr = $(tmp);
   if( eptr.hasClass('glyphicon-one-fine-full-dot')) {
     eptr.removeClass('glyphicon-one-fine-full-dot').addClass('glyphicon-one-fine-empty-dot');
     eptr.title='to show';
-    trackingPlot[plot_idx]= false;
+    if(plot_idx != specialPlotIdx) trackingPlot[plot_idx]= false;
     } else {
       eptr.removeClass('glyphicon-one-fine-empty-dot').addClass('glyphicon-one-fine-full-dot');
-      trackingPlot[plot_idx]= true;
+      if(plot_idx != specialPlotIdx) trackingPlot[plot_idx]= true;
       eptr.title='';
   }
 }
@@ -67,23 +69,45 @@ function togglePlot(plot_idx, pname) {
 // only click to enable, 
 // togglePlot(1,'1_plot_eye_name')
 // 1_plot_visible
-function toggleToPlot(plot_idx, pname) {
-  if(trackingPlot[plot_idx]== true) {
-   // do nothting
+function toggleToPlot(plot_idx, pname_eye) {
+  if(plot_idx == specialPlotIdx) {
+    if(trackingSpecial) return; // do nothing
+    trackingSpecial=true;
+    var cnt=trackingPlot.length;
+    var t=[];
+    for(var i=0;i<cnt;i++) {
+      if(trackingPlot[i]== true) {
+        togglePlot(i, getPlotEyeName(i)); // turn found one off 
+        togglePlot(plot_idx,pname_eye); // turn clicked one on
+      }
+      t.push(i);
+    }
+    refreshPlot(t);
     return;
   }
+
+  if(trackingPlot[plot_idx]== true) {
+   // do nothing
+    return;
+  }
+
+  if(trackingSpecial==true) {
+    trackingSpecial = false;
+    togglePlot(specialPlotIdx, specialPnameEye); // turn found one off 
+    togglePlot(plot_idx,pname_eye); // turn clicked one on
+    refreshPlot([plot_idx]);
+    return;
+  }
+
   var cnt=trackingPlot.length;
   for(var i=0;i<cnt;i++) {
     if(trackingPlot[i]== true) {
-      togglePlot(i, getPlotEyeName(i));
-      togglePlot(plot_idx,pname);
-      refreshPlot(plot_idx);
+      togglePlot(i, getPlotEyeName(i)); // turn found one off 
+      togglePlot(plot_idx,pname_eye); // turn clicked one on
+      refreshPlot([plot_idx]);
       return;
     }
   }
-}
-
-function enablePlot(plot_idx) {
 }
 
 // fill in the top level of plotList
@@ -91,6 +115,9 @@ function add2PlotList(titlelist) {
   for(var i=0; i<titlelist.length;i++) {
     var pname=titlelist[i];
     addOnePlot(i, pname);
+  }
+  if(moreThanOnePlot()) {
+    addOnePlot(specialPlotIdx,'ALL'); // very hacky
   }
   togglePlot(0, getPlotEyeName(0));
 }
@@ -109,10 +136,9 @@ function addOnePlot(plot_idx, pname) {
   _nn+='<div class="panel-heading">';
   _nn+='<div class="panel-title row" style="background-color:transparent;">'; 
 
-if(moreThanOnePlot()) {
-//window.console.log("more than one data..");
-  _nn+='<button id="'+_visible_name+'" class="pull-left"  style="display:inline-block;outline: none;border:none; background-color:white"  onClick="toggleToPlot('+plot_idx+',\''+_eye_name+'\')" title="to show"><span id="'+_eye_name+'" class="glyphicon glyphicon-one-fine-empty-dot" style="color:#337ab7;"></span> </button>';
-}
+  if(moreThanOnePlot()) {
+    _nn+='<button id="'+_visible_name+'" class="pull-left"  style="display:inline-block;outline: none;border:none; background-color:white"  onClick="toggleToPlot('+plot_idx+',\''+_eye_name+'\')" title="to show"><span id="'+_eye_name+'" class="glyphicon glyphicon-one-fine-empty-dot" style="color:#337ab7;"></span> </button>';
+  }
 
   _nn+='<text>'+pname+'</text>';
   _nn+='</div> <!-- panel-title -->'; 
@@ -127,5 +153,6 @@ if(moreThanOnePlot()) {
 //  window.console.log(_nn);
   return _visible_name;
 }
+
 
 

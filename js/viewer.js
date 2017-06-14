@@ -20,7 +20,8 @@ var  frameWidth=0;
 var  frameHeight=0;
 
 var  saveFirst=true;
-/*
+
+/* default set of color if user did not supply any
 #DF0F0F    red (0.847, 0.057, 0.057)
 #868600    yellow (0.527, 0.527, 0)
 #009600    green (0, 0.592, 0)
@@ -30,6 +31,14 @@ var  saveFirst=true;
 */
 
 var defaultColor=['#DF0F0F','#868600','#009600','#5050FC', '#B700B7','#008E8E'];
+// in case myColor is too few
+// just cycle through
+function getDefaultColor(p) {
+  var len=defaultColor.length;
+  var t= (p+len) % len; 
+  return defaultColor[t];
+}
+
 // should be a very small file and used for testing and so can ignore
 // >>Synchronous XMLHttpRequest on the main thread is deprecated
 // >>because of its detrimental effects to the end user's experience.
@@ -97,15 +106,14 @@ jQuery(document).ready(function() {
 
 // under chaise/angular, the plot window has
 // width/height=0 when accordian-group is-open=false
+
   var resizeTimer;
-// under chaise/angular, the plot window has
-// width/height=0 when accordian-group is-open=false
-window.addEventListener('resize', function(event){
-  clearTimeout(resizeTimer);
-  resizeTimer = setTimeout(function() {
-    doResize();
-  }, 250);
-});
+  window.addEventListener('resize', function(event){
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(function() {
+      doResize();
+    }, 250);
+  });
 
 }) // end of MAIN
 
@@ -126,14 +134,7 @@ function doResize() {
 // initial plot to display, always the first one
 function displayInitPlot() {
   var plot_idx=0;
-  refreshPlot(plot_idx);
-}
-
-// just in case myColor is too little
-function getDefaultColor(p) {
-  var len=defaultColor.length;
-  var t= (p+len) % len; 
-  return defaultColor[t];
+  refreshPlot([plot_idx]);
 }
 
 // could replace with code that does
@@ -141,13 +142,19 @@ function getDefaultColor(p) {
 // slow
 function resizePlots() {
   var plot_idx=0;
-  refreshPlot(plot_idx);
+  refreshPlot([plot_idx]);
 }
 
 // This completely recompute the plot
-function refreshPlot(plot_idx) {
+// with one or more url plot data
+function refreshPlot(plot_idx_list) {
   $(lineDivname).empty();
-  var config=getPlotData(plot_idx); //return [pdata,xidx, yidx, clist,alist];
-  addLinesPlot(lineDivname, config, frameWidth-5, frameHeight-5);
+  var pcnt=plot_idx_list.length;
+  var configs=[];
+  for(var i=0; i<pcnt; i++) {
+    configs.push(getPlotData(plot_idx_list[i])); 
+           //[pdata,xidx, yidx, clist,alist];
+  }
+  addLinePlot(lineDivname, configs, frameWidth-5, frameHeight-5);
 }
 

@@ -16,7 +16,7 @@ var initYidx=[];  // column idx to be used for data lines
 var initAlias=[]; // alias for each header lines to be used as label
 var initMarker=[];// 'markers', 'lines', 'lines+markers'
 var initColor=[]; // color of the marker
-var initSkip=[];  // skip how many lines to skip after the header (1st row)
+var initSkip=[];  // how many lines to skip after the header (1st row)
 var initXAxis=[]; // label for x axis
 var initYAxis=[]; // label for y axis
 var initTitle=[]; // title for the plot,
@@ -80,7 +80,7 @@ function processArgs(args) {
   var label=null;
   var marker=[];;
   var first=true;
-window.console.log(args[1]);
+//window.console.log(args[1]);
   var params = args[1].split('&');
   for (var i=0; i < params.length; i++) {
     var param = unescape(params[i]);
@@ -110,6 +110,14 @@ var myProcessArg=function(kvp0, kvp1) {
                  xidx.push(0);
                if(yidx.length == 0)
                  yidx.push(1);
+// special handling, expand x 
+if(yidx.length > xidx.length) {
+  var target=xidx[xidx.length-1];
+  var cnt=yidx.length-xidx.length;
+  for(var k=0; k< cnt;k++) {
+    xidx.push(target);
+  }
+}
                initXidx.push(xidx);
                xidx=[];
                initYidx.push(yidx);
@@ -233,7 +241,6 @@ var myProcessArg=function(kvp0, kvp1) {
 //            "skiprow":1, "name":"firstFile",
 //            "header":true } ]
              var t=trimQ(kvp1);
-window.console.log(t); 
              var items;
              if( typeof t === 'object') {
                items=t; 
@@ -244,7 +251,7 @@ window.console.log(t);
                 var p=items[pidx]; // for a single plot
                 for(var tidx in p ) {
                    var t=p[tidx]; // for a single plot
-window.console.log("plots:", tidx, " ",t);
+//window.console.log("plots:", tidx, " ",t);
                    myProcessArg(tidx, t);
                 }
              }
@@ -263,7 +270,6 @@ window.console.log("plots:", tidx, " ",t);
              var items = JSON.parse(t);
              for( var pidx in items ) {
                 var p=items[pidx]; // for a single plot
-window.console.log("p is", p);
 // special case,  if there is no url in here, stuff in a dummy one
                 var t=p['url'];
                 if(t == undefined) {
@@ -271,7 +277,7 @@ window.console.log("p is", p);
                 }
                 for(var tidx in p ) {
                    var t=p[tidx]; // for a single plot
-window.console.log("plots:", tidx, " ",t);
+//window.console.log("plots:", tidx, " ",t);
                    myProcessArg(tidx, t);
                 }
              }
@@ -284,7 +290,7 @@ window.console.log("dropping this...",kvp0.trim());
              }
        }
 }; // funciton myProcessArg
-window.console.log("kvp ..", kvp[0], " ", kvp[1]);
+//window.console.log("kvp ..", kvp[0], " ", kvp[1]);
        myProcessArg(kvp[0], kvp[1]);
     }
   }
@@ -293,6 +299,14 @@ window.console.log("kvp ..", kvp[0], " ", kvp[1]);
       xidx.push(0);
     if(yidx.length == 0)
       yidx.push(1);
+// special case
+if(yidx.length > xidx.length) {
+  var target=xidx[xidx.length-1];
+  var cnt=yidx.length-xidx.length;
+  for(var k=0; k<cnt;k++) {
+    xidx.push(target);
+  }
+}
     initXidx.push(xidx);
     initYidx.push(yidx);
     initColor.push(color);
@@ -317,6 +331,7 @@ window.console.log("kvp ..", kvp[0], " ", kvp[1]);
 // pick up the key term of every item in array  
 // it looks like there are duplicate keys on the cvs file header
 function getOriginalDataByKey(data,key) {
+//window.console.log(typeof data);
    var alist=data.map(function(k) { return k[key]; } );
    return alist;
 }

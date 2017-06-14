@@ -1,10 +1,70 @@
 //
 // line-viewer
 //
-var savePlot=[]; // first one is threeD, 2nd is subplots
+var savePlot=[]; 
+
+function addLinePlot(divname, configs, fwidth, fheight) {
+  var pcnt=configs.length; //
+  if(pcnt < 1) 
+    return;
+  var config1=configs[0];
+  var pdata=config1[0];
+  var xkeys=config1[1];
+  var ykeys=config1[2];
+  var clist=config1[3];
+  var alist=config1[4];
+  var mlist=config1[5];
+  var xaxis=config1[6];
+  var yaxis=config1[7];
+  var title=config1[8];
+  var label=config1[9];
+
+/* need to get range separately and then combine.. */
+  var xrange=getMinMax(pdata,xkeys,true);
+  var yrange=getMinMax(pdata,ykeys,true);
+
+// get the data for the first set
+  var _data=getLinesAt(pdata,xkeys,ykeys,clist,mlist,alist);
+
+  for(var i=1; i<pcnt; i++) {
+    var t=configs[i];
+    if(t[6]!=null) xaxis=xaxis+t[6];
+    if(t[7]!=null) yaxis=yaxis+t[7];
+    if(t[8]!=null) title=title+t[8];
+    if(t[9]!=null) label=label+t[9];
+    var pd=t[0];
+    var xk=t[1];
+    var yk=t[2];
+    var cl=t[3];
+    var al=t[4];
+    var ml=t[5];
+    var xr=getMinMax(pd,xk,true);
+    var yr=getMinMax(pd,yk,true);
+    if(xr[0] < xrange[0]) xrange[0]=xr[0];
+    if(xr[1] > xrange[1]) xrange[1]=xr[1];
+    if(yr[0] < yrange[0]) yrange[0]=yr[0];
+    if(yr[1] > yrange[1]) yrange[1]=yr[1];
+    var kcnt=xk.length;
+    for(j=0;j<kcnt;j++) { // add more data
+      _data.push(makeOneTrace(pd,xk[j],yk[j],cl[j],ml[j],al[j]));
+    }
+  }
+
+  var _layout=getLinesDefaultLayout(fwidth, fheight,xaxis,yaxis,xrange,yrange,title);
+  var _width=fwidth;
+  var _height=fheight;
+
+  if(fwidth > 400)
+    plot=addAPlot(divname,_data, _layout, _width, _height, true);
+    else
+      plot=addAPlot(divname,_data, _layout, _width, _height, false);
+
+  savePlot[0]=plot;
+  return plot;
+} 
 
 //[p,xidx, yidx, clist,alist, mlist, xaxis,yaxis,title,label];
-//addLinesPlot(pdata, config, frameWidth-5, frameHeight-5);
+//addLinesPlot2(pdata, config, frameWidth-5, frameHeight-5);
 function addLinesPlot(divname, config, fwidth, fheight) {
   var pdata=config[0];
   var xkeys=config[1];
