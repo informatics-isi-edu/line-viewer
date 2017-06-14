@@ -23,28 +23,27 @@ and invoke the viewer as in **Examples**
 
 The viewer assumes a simple CSV file format.  Files are specified by a URL, and within line-viewer, are refered to by a file name (filename), The file name consists of the last component of the URL path.  We require that all file names be unique.
 
-The files may have an optional header row. Each column in the file is identified by an index, numbered starting from 1 from left to right.  Each trace within a file consists of X and Y pair, where the X and Y are identified by their respective column index or the respective value in the header row, if present.  
+The files may have an optional header row. Each column in the file is identified by an index, numbered starting from 0 from left to right.  Each trace within a file consists of X and Y pair, where the X and Y are identified by their respective column index or the respective value in the header row, if present.  
 
-By default, we assume that a header row is always present.  We require that values in the header row all be unique. If there is no header, then the `header` parameter should be set to ``false``. In addition, we support CSV files that may have lines of metadata prior to the header or first data row.  The ``skiprows`` parameter can be used to specify how many of these rows occur before the header (if ``header`` is true), or first data row (if ``header`` is false).
+By default, we assume that a header row is always present.  We require that values in the header row all be unique. If there is no header, then the `header` parameter should be set to ``false``. In addition, we support CSV files that may have lines of metadata prior to the header or first data row.  The ``skiprow`` parameter can be used to specify how many of these rows occur before the header (if ``header`` is true), or first data row (if ``header`` is false).
 
-By default, the first column of the CSV is assumed to be the X value, while the second and subsequent columns are assumed to be the Y values.  So for example the traces would be (1,2), (1,3), (1,4), etc. 
+By default, the first column of the CSV is assumed to be the X value, while the second and subsequent columns are assumed to be the Y values.  So for example the traces would be (0,1), (0,2), (0,3), etc. 
 
-line-viewer also supports an **interleaved** column layout in which columns are assumed to be orginized in X,Y pairs:  (1,2), (3,4), (5,6), etc.
+line-viewer also supports an **interleaved** column layout in which columns are assumed to be orginized in X,Y pairs:  (0,1), (2,3), (4,5), etc.
 
 It is also possible to enumerate traces explicilty by providing specific XY column pairings.
 
 ## Column Names 
 
-A column within a file is identified by either its column index, or by the value in its column heading if it exists.  
-Within line-viewer, we provide a global name for a column by specifying both its file name and the name of the column within that file, e.g. filename:index or filename:headervalue.  If there is only one file, the file name may be omitted.
+A column within a file is identified by its column index(index starting with 0).  
 
 ## Trace Names
 
-Each trace is assigned a name using the name of its Y column.  In addition, a trace may be defined an explicit name using the ``tracenames`` parameter.  
+Each trace is assigned a name using the name of its Y column.  In addition, a trace may be defined an explicit name using the ``alias`` parameter.  
 
 ## Plot Names
 
-Traces are grouped into named plots.  By default, all of the traces in a file are grouped inot a plot which is named by the file name.  Alternative plot names can be assigned using the ``plotname`` parameter.
+Traces are grouped into named plots.  By default, all of the traces in a file are grouped into a plot which is named by the file name.  Alternative plot names can be assigned using the ``title`` parameter.
 
 ## Invoking line-viewer
 
@@ -64,7 +63,7 @@ Parameters may specify options at the file, trace or plot level. The ``url`` for
 | **marker** | chars | trace |  what to draw for the traces. **lines** just lines; **markers** dots on datapoint ; **lines+markers** dots with lines; Default is lines |
 | **xaxislabel** | chars | file/plot | X axis label |
 | **yaxislabel** | chars | file/plot | Y axis label |
-| **skiprows** | integer | file/plot | number of lines to skip in the beginning of the datafile. Defaults to 0|
+| **skiprow** | integer | file/plot | number of lines to skip in the beginning of the datafile. Defaults to 0|
 | **title** | chars | file/plot | title of the plot  |
 | **header** | boolean | file/plot | to allow bare CSV file (without header) |
 | **aliaslabel** | chars | file/plot | an alias for the datafile, default(file stub) shows up in the pull-out panel |
@@ -119,5 +118,5 @@ view.html?url=http://localhost/data/data1.csv&
              title=Title2
 ```
 
-More sample examples in viewer-line.js
+More sample examples including preliminary json structured configuration are in viewer-line.js
 
