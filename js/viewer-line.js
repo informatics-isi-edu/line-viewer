@@ -202,7 +202,6 @@ if(yidx.length > xidx.length) {
              }
 // this is the number of lines to skip for header..
           case 'skiprow': 
-          case 'skiprows': 
              {
              var t=parseInt(kvp1);
              if(!isNaN(t))

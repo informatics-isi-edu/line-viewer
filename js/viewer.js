@@ -2,10 +2,10 @@
 // line-viewer
 //
 // Usage example:
-//  http://localhost/gpcr/other_viewer/view.html?
+//  http://localhost/gpcr/line_viewer/view.html?
 //     http://localhost/data/gpcr/dummy.csv
 //
-//  http://localhost/gpcr/other_viewer/view.html?
+//  http://localhost/gpcr/line_viewer/view.html?
 //     url=http://localhost/data/other_viewer/data-dummy.csv
 //
 //  see viewer-line.js for more examples

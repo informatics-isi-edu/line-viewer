@@ -8,17 +8,16 @@ function dissmissPlots() {
   plotsClick();
 }
 
-// slide out
+// slide in/out and hide plots-button
 function plotsClick() {
   plots_sidebar = !plots_sidebar;
+  var btn = document.getElementById('plots-button');
   if(plots_sidebar) {
     sidebar_plots_slideOut();
     //hide button
-    var btn = document.getElementById('plots-button');
     btn.style.opacity = 0;
     } else {
       sidebar_plots_slideIn();
-      var btn = document.getElementById('plots-button');
       btn.style.opacity = 1;
   }
 }
