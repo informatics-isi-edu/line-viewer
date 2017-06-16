@@ -43,14 +43,14 @@ Each trace is assigned a name using the name of its Y column.  In addition, a tr
 
 ## Plot Names
 
-Traces are grouped into named plots.  By default, all of the traces in a file are grouped into a plot which is named by the file name.  Alternative plot names can be assigned using the ``title`` parameter.
+By default, all of the traces in a file are grouped into a plot which is named by the file name.  Alternative plot names can be assigned using the ``title`` parameter.
 
 ## Invoking line-viewer
 
 Paremeters may be passed to line-viewer as a URL query parameter.  
+Parameters are optional and are organized per **url**, first in-first out when explicitly expressed.
 
-Parameter can apply to a file, trace, or plot.  
-Parameters may specify options at the file, trace or plot level. The ``url`` for a file must be specified before any of the trace, plot, or file level paramters that are related to that file.  In the case of repeated parameters, the last value is the one that is used. 
+Parameters may specify options at the trace or file/plot level. The ``url`` for a file must be specified before any of the trace, or file/plot level paramters that are related to that file.  In the case of repeated parameters, the last value is the one that is used. 
 
 | Parameter | Value | Level | Description |
 | --- | --- | --- | --- |
