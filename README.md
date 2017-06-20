@@ -120,3 +120,4 @@ view.html?url=http://localhost/data/data1.csv&
 
 More sample examples including preliminary json structured configuration are in viewer-line.js
 
+Sample plot is in sample.png
